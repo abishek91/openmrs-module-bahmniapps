@@ -1,46 +1,11 @@
 'use strict';
 
 angular.module('opd.conceptSet.controllers')
-    .controller('ConceptSetController', ['$scope', '$rootScope','$route', 'ConceptSetService', function ($scope, $rootScope,$route, conceptSetService) {
+    /*.controller('ConceptSetController', ['$scope', '$rootScope','$route', 'ConceptSetService', function ($scope, $rootScope,$route, conceptSetService) {
 
-        if(!$rootScope.vitals || !$rootScope.vitals.conceptSet){
-            $scope.getConceptSet = function (name) {
-                console.log("in get concept set");
-                conceptSetService.getConceptSetMembers(name).success(function(response){
-                    if(response.results && response.results.length > 0){
-                        $rootScope.vitals.conceptSet = response.results[0].setMembers
-                    }
-                })
-            }
 
-        }
-
-        var conceptSetMap = {
-            "vitals":"VITALS_CONCEPT"
-        }
-
-        var constructObsList = function(){
-            var obsList = [];
-            for(var conceptUuid in $rootScope.vitals.conceptToObservationMap){
-                obsList.push($rootScope.vitals.conceptToObservationMap[conceptUuid]);
-            }
-            return obsList;
-        }
-       // var conceptSetName = $route.current.params.conceptSet;
-
-        $scope.getObsForConceptUuid = function(conceptUuid){
-            if($rootScope.vitals && $rootScope.vitals.conceptToObservationMap) {
-                return  $rootScope.vitals.conceptToObservationMap[conceptUuid];
-            }
-            return {};
-        }
-
-        $scope.$on('$destroy', function() {
-            console.log($rootScope.vitals);
-            $rootScope.vitals.recordedVitals = constructObsList();
-        });
-
-    }]).directive('showConcept',['$rootScope',function(rootScope){
+    }]).*/
+    .directive('showConcept',['$rootScope',function(rootScope){
         var getObsValueReference = function(conceptReference){
             return "conceptObsMap["+conceptReference+".uuid].value";
         }
@@ -74,6 +39,63 @@ angular.module('opd.conceptSet.controllers')
                         '</div>'+
                     '</div></fieldset>' +
                 '</div>'
+        }
+    }]).directive('showConceptSet',['$rootScope',function(rootScope){
+            var template =
+            '<form ng-init="getConceptSet(\'VITALS_CONCEPT\')">'+
+                '<div  ng-repeat="concept in conceptSet" >'+
+                    '<show-concept concept-obs-map="$parent.conceptToObservationMap" concept="concept" ></show-concept>'+
+                '</div>' +
+            '</form>' ;
+
+            var name = 'VITALS_CONCEPT';
+            var controller = function($scope,ConceptSetService){
+            rootScope[name] = rootScope[name] || {}
+
+            if(!rootScope[name].conceptSet){
+                $scope.getConceptSet = function (name) {
+                    console.log("in get concept set");
+                    ConceptSetService.getConceptSetMembers(name).success(function(response){
+                        if(response.results && response.results.length > 0){
+                            rootScope[name].conceptSet = response.results[0].setMembers;
+                            rootScope[name].conceptToObservationMap = new Bahmni.Opd.ObservationMapper(rootScope.encounterConfig)
+                                .map(rootScope.visit, rootScope[name].conceptSet);
+                        }
+                    })
+                }
+            }
+
+            var constructObsList = function(){
+                var obsList = [];
+                for(var conceptUuid in rootScope[name].conceptToObservationMap){
+                    obsList.push(rootScope[name].conceptToObservationMap[conceptUuid]);
+                }
+                return obsList;
+            }
+
+            $scope.getObsForConceptUuid = function(conceptUuid){
+                if(rootScope[name].conceptToObservationMap) {
+                    return  rootScope[name].conceptToObservationMap[conceptUuid];
+                }
+                return {};
+            }
+
+            /*$scope.$on('$destroy', function() {
+                console.log($rootScope.vitals);
+                $rootScope.vitals.recordedVitals = constructObsList();
+            });*/
+        }
+
+        return {
+            restrict: 'E',
+            scope :{
+                displayType:"@",
+                emptyObsCheck:"@",
+                conceptSetName:"@"
+            },
+            template :template,
+            controller : controller
+
         }
     }])
 

@@ -39,9 +39,6 @@ Bahmni.Opd.ObservationMapper = function(encounterConfig) {
             observations = opdEncounter.obs;
         }
 
-        return {
-            conceptToObservationMap:constructConceptToObsMap(conceptSet,observations,conceptToObservationMap)
-        };
-
+        return constructConceptToObsMap(conceptSet,observations,conceptToObservationMap)
     }
 }

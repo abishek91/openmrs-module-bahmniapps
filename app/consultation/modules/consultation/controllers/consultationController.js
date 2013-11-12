@@ -4,6 +4,7 @@ angular.module('opd.consultation.controllers')
     .controller('ConsultationController', ['$scope', '$rootScope', 'consultationService', '$route', '$location', function ($scope, $rootScope, consultationService, $route, $location) {
 
     $scope.save = function () {
+        
         var encounterData = {};
         encounterData.patientUuid = $scope.patient.uuid;
         encounterData.encounterTypeUuid = $rootScope.encounterConfig.getOpdConsultationEncounterUuid();
@@ -19,15 +20,11 @@ angular.module('opd.consultation.controllers')
             });
         }
 
-
         encounterData.testOrders = $rootScope.consultation.investigations.map(function (investigation) {
             return { uuid:investigation.uuid, conceptUuid:investigation.conceptUuid, orderTypeUuid:investigation.orderTypeUuid };
         });
 
-
         var startDate = new Date();
-
-
         var allTreatmentDrugs = $rootScope.consultation.treatmentDrugs || [];
         var newlyAddedTreatmentDrugs = allTreatmentDrugs.filter(function (drug) {
             return !drug.savedDrug;
@@ -42,12 +39,13 @@ angular.module('opd.consultation.controllers')
         encounterData.disposition = $rootScope.disposition.adtToStore;
 
         var addObservationsToEncounter = function(){
-//            if($rootScope.vitals && $rootScope.vitals.recordedVitals) {
-//                encounterData.observations = [];
-//                encounterData.observations = encounterData.observations.concat($rootScope.vitals.recordedVitals);
-//            }
-        }
-
+            encounterData.observations = [];
+            for (var i in $rootScope.observationList) {
+                if ($rootScope.observationList[i]) {
+                    encounterData.observations = encounterData.observations.concat($rootScope.observationList[i].observations);
+                }
+            }
+        };
         addObservationsToEncounter();
 
         consultationService.create(encounterData).success(function () {

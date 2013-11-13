@@ -1,28 +1,45 @@
 <div ng-switch on="concept.set">
-     <div class="form-field" ng-switch-when="false" ng-hide="emptyObsCheck && ! getObsValueReference(concept) ">
-        <div class="field-attribute"><label>{{concept.display}}</label><span class="label-add-on"
-                                                                             ng-show="concept.units">({{concept.units}})</span>
-        </div>
-        <div class="field-value" ng-switch on="displayType">
-            <span ng-switch-when="readonly" class="value-text-only">{{ getObsValueReference(concept) }}</span>
-            <input ng-switch-default type="text" placeholder="{{concept.display}}"
-                   ng-model=" getObsValueReference(concept) "/>
-        </div>
+     <div class="form-field" ng-switch-when="false" ng-hide="emptyObsCheck && ! conceptObsMap[concept.uuid].value ">
+         <div class="field-attribute">
+             <label>{{concept.display}}</label><span class="label-add-on" ng-show="concept.units">({{concept.units}})</span>
+         </div>
+         <div  ng-switch on="displayType" class="field-value">
+             <span class="value-text-only" ng-switch-when="readonly">{{conceptObsMap[concept.uuid].value}}</span>
+            <!-- <input  type="text" ng-switch-default ng-model="conceptObsMap[concept.uuid].value"></input>-->
+             <div ng-switch-default>
+                 <div ng-switch on="concept.answers.length">
+                     <input type="text" ng-switch-when="0" ng-model="conceptObsMap[concept.uuid].value"></input>
+                     <select class="" ng-switch-default ng-model="conceptObsMap[concept.uuid].value"
+                             ng-options="option.uuid as option.display for option in concept.answers">
+                     </select>
+                 </div>
+             </div>
+         </div>
+
     </div>
     <fieldset ng-switch-when="true">
         <div class="form-field">
             <div class="form-field form-field-group" ng-repeat="childConcept in concept.setMembers"
-                 ng-hide="emptyObsCheck && ! getObsValueReference(childConcept)">
+                 ng-hide="emptyObsCheck && ! conceptObsMap[childConcept.uuid].value">
+
                 <div ng-switch on="$index">
                     <legend ng-switch-when="0" class="mylegend"><strong>{{concept.display}}</strong></legend>
                 </div>
-                <div class="field-attribute"><label>{{childConcept.display}}</label><span ng-show="concept.units">({{concept.units}})</span>
+
+                <div class="field-attribute">
+                    <label>{{childConcept.display}}</label><span class="label-add-on" ng-show="childConcept.units">({{childConcept.units}})</span>
                 </div>
-                <div class="field-value" ng-switch on="displayType">
-                    <span ng-switch-when="readonly"
-                          class="value-text-only">{{ getObsValueReference(childConcept) }}</span>
-                    <input ng-switch-default type="text" placeholder="{{childConcept.display}}"
-                           ng-model=" getObsValueReference(childConcept)"/>
+                <div  ng-switch on="displayType" class="field-value">
+                    <span class="value-text-only" ng-switch-when="readonly">{{conceptObsMap[childConcept.uuid].value}}</span>
+                    <!-- <input  type="text" ng-switch-default ng-model="conceptObsMap[concept.uuid].value"></input>-->
+                    <div ng-switch-default>
+                        <div ng-switch on="childConcept.answers.length">
+                            <input type="text" ng-switch-when="0" ng-model="conceptObsMap[childConcept.uuid].value"></input>
+                            <select class="" ng-switch-default ng-model="conceptObsMap[childConcept.uuid].value"
+                                    ng-options="option.uuid as option.display for option in childConcept.answers">
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

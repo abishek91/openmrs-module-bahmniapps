@@ -5,12 +5,10 @@ angular.module('opd.conceptSet')
 ////
 ////
 //    }])
-    .directive('showConcept', ['$rootScope', function (rootScope) {
-        var getObsValueReference = function (conceptReference) {
-            return "conceptObsMap[" + conceptReference + ".uuid].value";
-        };
 
-        return {
+
+    .directive('showConcept', ['$rootScope', function (rootScope) {
+            return {
             restrict: 'E',
             scope: {
                 conceptObsMap: "=",
@@ -54,11 +52,19 @@ angular.module('opd.conceptSet')
                 var obsList = [];
                 for (var conceptUuid in $scope.conceptToObservationMap) {
                     if ($scope.conceptToObservationMap[conceptUuid].value) {
+
                         obsList.push($scope.conceptToObservationMap[conceptUuid]);
                     }
                 }
                 return obsList;
             };
+
+          /*  // this is needed so that we can display the label of the coded concept and not the concept Uuid
+            var conceptToObservationMapWithValueDesc = function(){
+                for(var conceptUuid in $scope.conceptToObservationMap) {
+                    if($scope.conceptToObservationMap[conceptUuid].value)
+                }
+            }*/
 
             $scope.$on('$destroy', function () {
                 $rootScope.observationList = $rootScope.observationList || {};

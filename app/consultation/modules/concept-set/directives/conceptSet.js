@@ -1,12 +1,6 @@
 'use strict';
 
 angular.module('opd.conceptSet')
-//   .controller('ConceptSetController', ['$scope', '$rootScope','$route', 'ConceptSetService', function ($scope, $rootScope,$route, conceptSetService) {
-////
-////
-//    }])
-
-
     .directive('showConcept', ['$rootScope', function (rootScope) {
             return {
             restrict: 'E',
@@ -88,5 +82,5 @@ angular.module('opd.conceptSet')
             controller: controller
 
         }
-    }])
+    }]);
 

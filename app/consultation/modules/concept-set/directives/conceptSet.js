@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('opd.conceptSet')
-    .directive('showConcept', ['$rootScope', function (rootScope) {
-            return {
+    .directive('showConcept', ['$rootScope', function () {
+        return {
             restrict: 'E',
             scope: {
                 conceptObsMap: "=",
@@ -53,12 +53,12 @@ angular.module('opd.conceptSet')
                 return obsList;
             };
 
-          /*  // this is needed so that we can display the label of the coded concept and not the concept Uuid
-            var conceptToObservationMapWithValueDesc = function(){
-                for(var conceptUuid in $scope.conceptToObservationMap) {
-                    if($scope.conceptToObservationMap[conceptUuid].value)
-                }
-            }*/
+            /*  // this is needed so that we can display the label of the coded concept and not the concept Uuid
+             var conceptToObservationMapWithValueDesc = function(){
+             for(var conceptUuid in $scope.conceptToObservationMap) {
+             if($scope.conceptToObservationMap[conceptUuid].value)
+             }
+             }*/
 
             $scope.$on('$destroy', function () {
                 $rootScope.observationList = $rootScope.observationList || {};

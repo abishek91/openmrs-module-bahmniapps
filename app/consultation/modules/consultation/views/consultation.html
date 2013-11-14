@@ -14,15 +14,18 @@
     </section>
     <section class="block diagnosis">
         <h2>Diagnosis</h2>
+
         <div class="block-content" ng-show="consultation.diagnoses.length > 0">
             <div class="diagnosis-type">
                 <h3>Primary Diagnoses</h3>
+
                 <div ng-repeat="diagnosis in consultation.diagnoses" ng-show="diagnosis.isPrimary()">
                     {{diagnosis.conceptName()}}&nbsp;({{diagnosis.certainty}})
                 </div>
             </div>
             <div class="diagnosis-type">
                 <h3>Secondary Diagnoses</h3>
+
                 <div ng-repeat="diagnosis in consultation.diagnoses" ng-hide="diagnosis.isPrimary()">
                     {{diagnosis.conceptName()}}&nbsp;({{diagnosis.certainty}})
                 </div>
@@ -31,13 +34,14 @@
     </section>
     <section class="block treatment">
         <h2>Treatment</h2>
-         <div  class="block-content" ng-include src="'modules/consultation/views/treatmentDrugs.html'"></div>
+
+        <div class="block-content" ng-include src="'modules/consultation/views/treatmentDrugs.html'"></div>
     </section>
 
     <section class="block disposition">
         <h2>Disposition</h2>
 
-        <div ng-repeat="disposition in disposition.dispositions"  class="block-content">
+        <div ng-repeat="disposition in disposition.dispositions" class="block-content">
             <ul>
                 <li>
                     -&nbsp; {{disposition.adtName}}
@@ -52,15 +56,14 @@
         </div>
 
     </section>
-    
+
     <section class="block">
         <h2>Observations</h2>
-        <section class="block" ng-repeat="(key,value) in observationList">
-            <h3 ng-show="value.observations.length > 0">{{key}}</h3>
-            <show-concept-set concept-set-name="key" empty-obs-check="true" display-type="readonly"></show-concept-set>
+        <section ng-repeat="obs in observations">
+            <show-observation obs="obs"></show-observation>
         </section>
     </section>
-    
+
     <section class="notes">
         <textarea placeholder="Notes: " rows="6"></textarea>
     </section>

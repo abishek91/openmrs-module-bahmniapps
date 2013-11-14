@@ -1,5 +1,6 @@
 var Bahmni = Bahmni || {};
 Bahmni.Opd = Bahmni.Opd || {};
+Bahmni.Opd.Temp = Bahmni.Opd.Temp || {};
 
 
 Bahmni.Opd.Constants = (function() {

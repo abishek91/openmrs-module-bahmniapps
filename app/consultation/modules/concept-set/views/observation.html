@@ -1,0 +1,19 @@
+<div ng-switch on="obs.members.length">
+    <div class="form-field" ng-switch-when="0" ng-hide="emptyObsCheck && ! obs.value ">
+        <div class="field-attribute">
+            <label>{{obs.conceptName}}</label>
+            <span class="label-add-on" ng-show="obs.conceptUnits">({{obs.conceptUnits}})</span>
+        </div>
+        <div class="field-value">
+            <span class="value-text-only">{{obs.displayName()}}</span>
+        </div>
+    </div>
+    <fieldset ng-switch-default>
+        <div class="form-field">
+            <legend class="mylegend"><strong>{{obs.conceptName}}</strong></legend>
+            <div class="form-field form-field-group" ng-repeat="member in obs.members">
+                <observation obs={{member}}></observation>
+            </div>
+        </div>
+    </fieldset>
+</div>

@@ -42,8 +42,8 @@ angular.module('opd.consultation').factory('initialization',
                     $rootScope.getBedDetailsForPatient(visit.patient.uuid);
                     $rootScope.disposition = new Bahmni.Opd.DispositionMapper($rootScope.encounterConfig).map(visit);
                     $rootScope.disposition.currentActionIndex = 0; // this will be used in case we have multiple encounters with dispositions
-
-
+                    $rootScope.observations =
+                        new Bahmni.Opd.Temp.ObservationMapper($rootScope.encounterConfig).map($rootScope.visit);
 
                     return patientService.getPatient(visit.patient.uuid).success(function (openMRSPatient) {
                         $rootScope.patient = patientMapper.map(openMRSPatient);

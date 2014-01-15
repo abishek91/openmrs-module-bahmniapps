@@ -1,4 +1,3 @@
-<section infinite-scroll="loadEncountersForPreviousDay()" infinite-scroll-disabled="!hasMoreVisitDays" ng-show="visitDay.hasData()" ng-repeat="visitDay in visitDays" class="block-day block">
     <div>
         <h1 bo-text="'Day ' + visitDay.dayNumber"></h1>
         <ul class="add-info">
@@ -81,5 +80,3 @@
             </li>
         </ul>        
     </section>
-</section>
-<div id="loader" ng-show="hasMoreVisitDays">Loading data for previous days...</div>

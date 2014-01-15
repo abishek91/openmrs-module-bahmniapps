@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('opd.consultation.controllers')
-    .controller('VisitController', ['$scope', 'encounterService', 'visitService','$route', 'spinner','$routeParams',
-        function ($scope, encounterService, visitService, $route, spinner,$routeParams) {
-    var visitUuid = $route.current.params.visitUuid;
+    .controller('VisitController', ['$rootScope', '$scope', 'encounterService', 'visitService','$route', 'spinner','$routeParams',
+        function ($rootScope, $scope, encounterService, visitService, $route, spinner,$routeParams) {
 	$scope.visitDays = [];
     $scope.hasMoreVisitDays;
     $scope.patientUuid = $routeParams.patientUuid;
@@ -11,12 +10,20 @@ angular.module('opd.consultation.controllers')
     var loading;
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
-    spinner.forPromise(visitService.getVisitSummary(visitUuid).success(function (encounterTransactions) {
-        $scope.visitSummary = Bahmni.Opd.Consultation.VisitSummary.create(encounterTransactions);
-        if($scope.visitSummary.hasEncounters()) {
-            loadEncounters($scope.visitSummary.mostRecentEncounterDateTime);
-        }
-    }));
+    var visitUuid = $rootScope.visitUuid || $route.current.params.visitUuid;
+
+
+    var getVisitSummary = function(visitUuid) {
+        $scope.visitDays = [];
+        $scope.hasMoreVisitDays;
+        console.log(visitUuid);
+        return visitService.getVisitSummary(visitUuid).success(function (encounterTransactions) {
+            $scope.visitSummary = Bahmni.Opd.Consultation.VisitSummary.create(encounterTransactions);
+            if($scope.visitSummary.hasEncounters()) {
+                loadEncounters($scope.visitSummary.mostRecentEncounterDateTime);
+            }
+        });
+    }
 
     var markLoadingDone = function() {
         loading = false;
@@ -33,6 +40,15 @@ angular.module('opd.consultation.controllers')
     	currentEncounterDate = encounterDate;
         $scope.hasMoreVisitDays = currentEncounterDate > $scope.visitSummary.visitStartDateTime;
     }
+
+    console.log(visitUuid);
+    spinner.forPromise(getVisitSummary(visitUuid));
+
+    $rootScope.$watch('visitUuid', function() {
+        visitUuid = $rootScope.visitUuid || $route.current.params.visitUuid;
+        console.log(visitUuid);
+        getVisitSummary(visitUuid);
+    });
 
     $scope.loadEncountersForPreviousDay = function() {    	
         if($scope.hasMoreVisitDays) {

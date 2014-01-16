@@ -12,7 +12,6 @@ angular.module('opd.patientDashboard',[])
             $scope.activeVisit = $scope.visits.filter(function(visit) {return visit.isActive()})[0];
             $scope.selectedVisit = $scope.visits[0];
             $scope.visitUuid=$scope.selectedVisit.uuid;
-            console.log($scope.selectedVisit);
         });
 
         $scope.showVisitSummary = function(visit) {

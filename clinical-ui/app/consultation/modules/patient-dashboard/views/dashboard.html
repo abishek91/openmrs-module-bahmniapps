@@ -32,8 +32,6 @@
     <article bindonce="visitSummary">
         <div ng-include="'../consultation/modules/patient-dashboard/views/diagnosisSummary.html'"/>
         <div ng-include="'../consultation/modules/patient-dashboard/views/dispositionSummary.html'"/>
-        <!-- <div ng-show="selectedVisit"> -->
-            <visit-summary visit-uuid="visitUuid"/>
-        <!-- </div> -->
+        <visit-summary bindonce="visitUuid" visit-uuid="visitUuid"/>
     </article>
 </article>

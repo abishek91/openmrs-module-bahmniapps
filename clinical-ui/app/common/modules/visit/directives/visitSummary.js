@@ -22,7 +22,6 @@ angular.module('bahmni.common.visit')
                     }
                     $scope.visitDays = [];
                     return visitService.getVisitSummary($scope.visitUuid).success(function (encounterTransactions) {
-                        console.log(encounterTransactions);
                         $scope.visitSummary = Bahmni.Opd.Consultation.VisitSummary.create(encounterTransactions);
                         if($scope.visitSummary.hasEncounters()) {
                             loadEncounters($scope.visitSummary.mostRecentEncounterDateTime);
@@ -40,9 +39,7 @@ angular.module('bahmni.common.visit')
                     encounterService.search($scope.visitUuid, encounterDate.toISOString().substring(0, 10)).success(function(encounterTransactions){
                         var dayNumber = DateUtil.getDayNumber($scope.visitSummary.visitStartDateTime, encounterDate);
                         var visitDay = Bahmni.Opd.Consultation.VisitDay.create(dayNumber, encounterDate, encounterTransactions, $rootScope.consultationNoteConcept, $rootScope.encounterConfig.orderTypes);
-                        console.log($scope.visitUuid);
                         $scope.visitDays.push(visitDay);
-                        console.log($scope.visitDays);
                     }).then(markLoadingDone, markLoadingDone);
                     currentEncounterDate = encounterDate;
                     $scope.hasMoreVisitDays = currentEncounterDate > $scope.visitSummary.visitStartDateTime;

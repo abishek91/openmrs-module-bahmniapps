@@ -6,6 +6,6 @@
 
         <div ng-include="'../consultation/modules/patient-dashboard/views/diagnosisSummary.html'"/>
         <div ng-include="'../consultation/modules/patient-dashboard/views/dispositionSummary.html'"/>
-        <div ng-include="'../consultation/modules/patient-dashboard/views/visitDaySummary.html'"/>
+        <visit-summary bindonce="visitUuid" visit-uuid="visitUuid"/>
     </article>
 </article>

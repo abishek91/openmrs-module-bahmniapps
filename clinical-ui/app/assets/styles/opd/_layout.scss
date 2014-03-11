@@ -57,7 +57,7 @@ body{
                         opacity:0.8;
                         filter:alpha(opacity=80);
                         &:first-child{
-                            background:url(../images/sprites.png) no-repeat;
+                            background: image-url("sprites.png") no-repeat;
                             background-position: 0 -108px ;
                             padding-left:20px;
                         }
@@ -67,7 +67,7 @@ body{
                         }
                         a{
                             padding:15px 10px 15px 0px;
-                            background:url(../images/sprites.png) repeat-x;
+                            background:image-url("sprites.png") repeat-x;
                             background-position: 0 -181px ;
                             display: inline-block;
                             -webkit-border-top-right-radius: 5px;

@@ -24,15 +24,15 @@ module.exports = function (grunt) {
         yeoman: yeomanConfig,
         watch: {
             compass: {
-                files: ['<%= yeoman.app %>/styles/**/*.{scss,sass}'],
+                files: ['<%= yeoman.app %>/assets/styles/**/*.{scss,sass}'],
                 tasks: ['compass']
             },
             livereload: {
                 files: [
                     '<%= yeoman.app %>/**/*.html',
                     '<%= yeoman.app %>/**/*.js',
-                    '<%= yeoman.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
-                    '<%= yeoman.app %>/styles/*.css',
+                    '<%= yeoman.app %>/assets/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
+                    '<%= yeoman.app %>/assets/styles/*.css',
                     '!<%= yeoman.app %>/components',
                     '!<%= yeoman.app %>/lib'
                 ],
@@ -93,7 +93,7 @@ module.exports = function (grunt) {
                     {
                         dot: true,
                         src: [
-                            '<%= yeoman.app %>/styles/*.css',
+                            '<%= yeoman.app %>/assets/styles/*.css',
                             '<%= yeoman.dist %>/*',
                             '!<%= yeoman.dist %>/.git*'
                         ]
@@ -101,7 +101,7 @@ module.exports = function (grunt) {
                 ]
             },
             server: [
-                '<%= yeoman.app %>/styles/.css/**'
+                '<%= yeoman.app %>/assets/styles/.css/**'
             ]
         },
         karma: {
@@ -119,13 +119,13 @@ module.exports = function (grunt) {
         },
         compass: {
             options: {
-                sassDir: '<%= yeoman.app %>/styles',
-                cssDir: '<%= yeoman.app %>/styles/',
-                imagesDir: '<%= yeoman.app %>/images',
+                sassDir: '<%= yeoman.app %>/assets/styles',
+                cssDir: '<%= yeoman.app %>/assets/styles',
+                imagesDir: '<%= yeoman.app %>/assets/images',
                 javascriptsDir: '<%= yeoman.app %>/scripts',
-                fontsDir: '<%= yeoman.app %>/styles/fonts',
+                fontsDir: '<%= yeoman.app %>/assets/styles/fonts',
                 importPath: '<%= yeoman.app %>/components',
-                relativeAssets: true
+                relativeAssets: false
             },
             dist: {},
             server: {
@@ -147,7 +147,7 @@ module.exports = function (grunt) {
                 '<%= yeoman.app %>/document/**/*.html',
                 '<%= yeoman.app %>/document-upload/**/*.html'
             ],
-            css: '<%= yeoman.app %>/styles/.css/**/*.css',
+            css: '<%= yeoman.app %>/assets/styles/.css/**/*.css',
             options: {
                 dest: '<%= yeoman.dist %>'
             }
@@ -165,7 +165,7 @@ module.exports = function (grunt) {
                 '<%= yeoman.dist %>/document/**/*.html',
                 '<%= yeoman.dist %>/document-upload/**/*.html',
             ],
-            css: '<%= yeoman.dist %>/styles/**/*.css',
+            css: '<%= yeoman.dist %>/assets/styles/**/*.css',
             options: {
                 dirs: ['<%= yeoman.dist %>']
             }
@@ -175,9 +175,9 @@ module.exports = function (grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: '<%= yeoman.app %>/images',
+                        cwd: '<%= yeoman.app %>/assets/images',
                         src: '**/*.{png,jpg,jpeg,gif}',
-                        dest: '<%= yeoman.dist %>/images'
+                        dest: '<%= yeoman.dist %>/assets/images'
                     }
                 ]
             }
@@ -188,9 +188,9 @@ module.exports = function (grunt) {
             },
             minify: {
                 expand: true,
-                cwd: '<%= yeoman.dist %>/styles/css/',
+                cwd: '<%= yeoman.dist %>/assets/styles/css/',
                 src: ['**/*.css', '!**/*.min.css'],
-                dest: '<%= yeoman.dist %>/styles/css/',
+                dest: '<%= yeoman.dist %>/assets/styles/css/',
                 ext: '.min.css'
             }
         },
@@ -293,9 +293,9 @@ module.exports = function (grunt) {
                             '*.{ico,txt}',
                             '.htaccess',
                             'components/**/*',
-                            'images/**/*.{gif,webp}',
-                            'styles/fonts/*',
-                            'lib/**/*'
+                            'assets/images/**/*.{gif,webp}',
+                            'assets/styles/fonts/*',
+                            'assets/lib/**/*'
                         ]
                     }
                 ]

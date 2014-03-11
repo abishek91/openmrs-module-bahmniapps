@@ -39,7 +39,7 @@
         height: 50px;
         margin: 19px;
         &.occupied {
-          background: url("../images/bed-occupied.png") no-repeat center center #cecece;
+          background: image-url("bed-occupied.png") no-repeat center center #cecece;
           &:hover{
             outline: 5px solid #B4B2B2;
             background-color: #B4B2B2;
@@ -47,7 +47,7 @@
           }
         }
         &.available{
-          background: url("../images/bed-available.png") no-repeat center center #94e594;
+          background: image-url("bed-available.png") no-repeat center center #94e594;
           &:hover{
             background-color: #76E676;
             outline: 5px solid #76E676;

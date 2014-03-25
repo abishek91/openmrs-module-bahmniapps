@@ -89,7 +89,7 @@ angular.module('bahmni.common.photoCapture')
                 confirmImageButton.focus();
             };
 
-            dialogElement.dialog({autoOpen: false, height: 300, width: 500, modal: true,
+            dialogElement.dialog({autoOpen: false, height: 1200, width: 1200, modal: true,
                 close: function(){
                     dialogOpen = false;
                     if (activeStream) {

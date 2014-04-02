@@ -13,8 +13,11 @@
           <div ng-repeat="diagnosis in diagnosisList" ng-hide="diagnosis.voided" class="table-body">
             <div class="row">
               <div class="col col1">
-                <input ng-model="diagnosis.codedAnswer.name" type="text" name="name" ui-autocomplete
-                       ng-change="clearEmptyRows($index)">
+                <!--<input ng-model="diagnosis.codedAnswer.name" type="text" name="name" ui-autocomplete-->
+                       <!--ng-change="clearEmptyRows($index)" ng-class="{'illegalValue': !diagnosis.isValid()}">-->
+                  <input ng-model="diagnosis.codedAnswer.name" type="text" name="name"
+                         my-autocomplete="{{ {'src': 'getDiagnosis', 'responseHandler': 'cleanOutDiagnosisList', 'onSelect':'selectItem', 'index' : $index} }}"
+                         ng-change="clearEmptyRows($index)" ng-class="{'illegalValue': !diagnosis.isValid()}">
               </div>
               <div class="col col2">
                 <buttons-radio class="btn-group" data-toggle="buttons-radio" model='diagnosis.order'

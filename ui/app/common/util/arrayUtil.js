@@ -8,8 +8,32 @@ Bahmni.Common.Util.ArrayUtil = {
 
     removeItem: function(array, item) {
     	var index = array.indexOf(item);
-    	if(index !== -1) {
-    		array.splice(index, 1)
-    	}
+    	this.removeItemAt(array, index);
+    },
+
+    removeItemAt: function(array, index) {
+        if(index !== -1) {
+            array.splice(index, 1)
+        }
+    },
+
+    clone: function (array) {
+        var clonedArray = [];
+        if(array && array.length > 0){
+            array.forEach(function (element) {
+                clonedArray.push(element);
+            });
+        }
+        return clonedArray;
+    },
+
+    presentInList: function (array, element, fieldToCompare){
+        var isPresent = false;
+        array.forEach(function(arrayElement){
+            if(arrayElement[fieldToCompare] == element[fieldToCompare]){
+                isPresent = true;
+            }
+        });
+        return isPresent;
     }
 };

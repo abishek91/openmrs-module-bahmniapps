@@ -6,8 +6,6 @@ angular.module('bahmni.clinical')
 
         $scope.placeholder = "Add Diagnosis";
         $scope.hasAnswers = false;
-
-        // TODO : Mujir/Sushmita - remove this hard coding. 'Ruled Out' would not be configured as certainty in OpenMRS.
         $scope.orderOptions = ['PRIMARY', 'SECONDARY'];
         $scope.certaintyOptions = ['CONFIRMED', 'PRESUMED', Bahmni.Common.Constants.ruledOutCertainty];
 
@@ -15,26 +13,50 @@ angular.module('bahmni.clinical')
             return diagnosisService.getAllFor(searchTerm);
         };
 
-        var _canAdd = function (diagnosis) {
+        var canAdd = function (diagnosis) {
             var canAdd = true;
             $scope.diagnosisList.forEach(function (observation) {
-                if (observation.conceptName === diagnosis.conceptName) {
+                if(diagnosis.codedAnswer && observation.codedAnswer.uuid === diagnosis.codedAnswer.uuid){
+                    canAdd = false;
+                }
+                else if(diagnosis.freeTextAnswer && observation.freeTextAnswer === diagnosis.freeTextAnswer){
                     canAdd = false;
                 }
             });
             return canAdd;
         };
 
+        var filterOutSelectedDiagnoses = function(allDiagnoses){
+            return allDiagnoses.filter(function(diagnosis){
+                return !alreadyAddedToDiagnosis(diagnosis);
+            });
+        };
+
+        var alreadyAddedToDiagnosis = function(diagnosis){
+            var isPresent = false;
+            $scope.diagnosisList.forEach(function(addedDiagnosis){
+                if(addedDiagnosis.codedAnswer.uuid == diagnosis.concept.uuid){
+                    isPresent = true;
+                }
+            });
+            return isPresent;
+
+        };
+
         var addDiagnosis = function (concept, index) {
             var diagnosisBeingEdited = $scope.diagnosisList[index];
             if (diagnosisBeingEdited) {
                 var diagnosis = new Bahmni.Clinical.Diagnosis(concept, diagnosisBeingEdited.order,
-                    diagnosisBeingEdited.certainty, diagnosisBeingEdited.existingObsUuid);
+                    diagnosisBeingEdited.certainty, diagnosisBeingEdited.existingObs);
             }
             else {
                 var diagnosis = new Bahmni.Clinical.Diagnosis(concept);
             }
-            if (_canAdd(diagnosis)) {
+            replaceDummyDiagnosisWithBuiltObject(diagnosis, index);
+        };
+
+        var replaceDummyDiagnosisWithBuiltObject = function(diagnosis, index){
+            if (canAdd(diagnosis)) {
                 $scope.diagnosisList.splice(index, 1, diagnosis);
             }
         };
@@ -56,20 +78,58 @@ angular.module('bahmni.clinical')
         };
 
         var allowContextChange = function () {
-            var invalidDrugs = $scope.diagnosisList.filter(function (diagnosis) {
+            var invalidDiagnoses = $scope.diagnosisList.filter(function (diagnosis) {
                 return !diagnosis.isValid();
             });
-            return invalidDrugs.length === 0;
+            return invalidDiagnoses.length === 0;
+        };
+
+        $scope.cleanOutDiagnosisList = function (data) {
+            var mappedResponse = data.map(
+                function (concept) {
+                    if (concept.conceptName === concept.matchedName) {
+                        return {
+                            'value':concept.matchedName,
+                            'concept':{
+                                'name':concept.conceptName,
+                                'uuid':concept.conceptUuid
+                            },
+                            lookup:{
+                                'name':concept.conceptName,
+                                'uuid':concept.conceptUuid
+                            }
+                        }
+                    }
+                    return {
+                        'value':concept.matchedName + "=>" + concept.conceptName,
+                        'concept':{
+                            'name':concept.conceptName,
+                            'uuid':concept.conceptUuid
+                        },
+                        lookup:{
+                            'name':concept.conceptName,
+                            'uuid':concept.conceptUuid
+                        }
+                    }
+                }
+            );
+            return filterOutSelectedDiagnoses(mappedResponse);
         };
 
 
-        $scope.selectItem = function (item, index) {
-            addDiagnosis(item.concept, index);
+        $scope.selectItem = function (index, selectedConcept) {
+            addDiagnosis(selectedConcept, index);
         };
 
         $scope.removeObservation = function (index) {
             if (index >= 0) {
-                $scope.diagnosisList[index].voided = true;
+                var diagnosisBeingRemoved = $scope.diagnosisList[index];
+                if(diagnosisBeingRemoved.existingObs){
+                    diagnosisBeingRemoved.voided = true;
+                }
+                else{
+                    Bahmni.Common.Util.ArrayUtil.removeItem($scope.diagnosisList, diagnosisBeingRemoved);
+                }
             }
         };
 

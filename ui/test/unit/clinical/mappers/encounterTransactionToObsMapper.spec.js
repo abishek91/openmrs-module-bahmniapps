@@ -69,7 +69,5 @@ describe("EncounterTransactionToObsMapper", function () {
         expect(obsMatchingUuid(observations, "b61436b6-7813-42fd-8af2-eb5d23ed726c")[0].provider.uuid).toBe("provider1");
         expect(obsMatchingUuid(observations, "c61436b6-7813-42fd-8af2-eb5d23ed726c")[0].provider.uuid).toBe("provider2");
     });
-
-
 });
 

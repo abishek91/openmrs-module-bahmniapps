@@ -31,8 +31,8 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
 
             var getPastDiagnoses = function() {
                 return diagnosisService.getPastDiagnoses(patientUuid).success(function (response) {
-                    var diagnosisMapper = new Bahmni.DiagnosisMapper($rootScope.consultation, $rootScope.ruledOutDiagnoses);
-                    $rootScope.consultation.pastDiagnoses = diagnosisMapper.mapPastDiagnosis(response);
+                    new Bahmni.DiagnosisMapper($rootScope.consultation)
+                        .mapAllLoadedDiagnoses(response, $rootScope.ruledOutDiagnoses, $rootScope.ruledOutDiagnosisConcept);
                 });
             };
 

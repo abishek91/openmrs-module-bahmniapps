@@ -6,7 +6,7 @@ angular.module('bahmni.clinical')
             minLength:2,
             source:function (request, response) {
                 scope.getDiagnosis(request.term).success(function (data) {
-                    response(data.map(
+                    var mappedResponse = data.map(
                         function (concept) {
                             if (concept.conceptName === concept.matchedName) {
                                 return {
@@ -25,7 +25,9 @@ angular.module('bahmni.clinical')
                                 }
                             }
                         }
-                    ));
+                    );
+                    var filteredOutDiagnoses = scope.filterOutSelectedDiagnoses(mappedResponse);
+                    response(filteredOutDiagnoses);
                 });
             },
             search:function (event) {
@@ -36,6 +38,7 @@ angular.module('bahmni.clinical')
             },
             select:function (event, ui) {
                 scope.selectItem(ui.item, scope.$index);
+                scope.$eval(attrs.ngChange);
                 return true;
             }
         });

@@ -16,18 +16,26 @@ Bahmni.Clinical.Diagnosis = function (codedAnswer, order, certainty, existingObs
         else{
             return self.codedAnswer.name;
         }
-    }
+    };
 
     self.isPrimary = function(){
         return self.order == "PRIMARY";
-    }
+    };
 
     self.isValid = function(){
         return (self.codedAnswer.name !== undefined && self.codedAnswer.uuid !== undefined )
             || (self.codedAnswer.name === undefined && self.freeTextAnswer === undefined);
-    }
+    };
 
     self.isEmpty = function(){
         return  self.getDisplayName() === undefined || self.getDisplayName().length === 0;
+    };
+
+    self.isRuledOut = function(){
+        return self.certainty == Bahmni.Common.Constants.ruledOutCertainty;
+    };
+
+    self.isNew = function() {
+        return self.existingObs == undefined || self.existingObs == '';
     }
 };

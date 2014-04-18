@@ -74,6 +74,20 @@ angular.module('bahmni.common.appFramework')
             return appDescriptor;
         };
 
+        this.getLayout = function(fileName){
+            var deferrable = $q.defer();
+            var layoutUrl = baseUrl + this.getAppDescriptor().contextPath + fileName;
+            loadConfig(layoutUrl).then(
+                function(result){
+                    deferrable.resolve(result.data);
+                },
+                function(error){
+                    deferrable.reject(error);
+                }
+            );
+            return deferrable.promise;
+        };
+
         this.initApp = function(appName, options, extensionFileSuffix) {
             var appLoader = $q.defer();
             var extensionFileName = extensionFileSuffix ? "/extension-" + extensionFileSuffix + ".json" : "/extension.json";

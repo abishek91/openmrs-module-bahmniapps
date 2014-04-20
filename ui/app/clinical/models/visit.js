@@ -15,6 +15,21 @@ Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, oth
     var orderGroup = new Bahmni.Clinical.OrderGroup();
     this.drugOrderGroups = orderGroup.group(drugOrders);
     this.otherInvestigationGroups = orderGroup.group(otherInvestigations);
+
+    this.admissionDate = this.getAdmissionDate();
+    this.visitEndDate = this.getDischargeDispositionDate() || this.getDischargeDate() || Bahmni.Common.Util.DateUtil.now();
+
+
+    var testOrders = [];
+    this.labTestOrderObsMap.forEach(function(labOrderObsMap){
+        console.log(labOrderObsMap.displayList);
+        testOrders = testOrders.concat(labOrderObsMap.displayList);
+    });
+
+    this.tabularResults =  Bahmni.Clinical.TabularLabResults.create(testOrders,this.admissionDate,this.visitEndDate);
+
+    console.log(this.tabularResults);
+    console.log(this.tabularResults.getRows());
 }
 
 Bahmni.Clinical.Visit.prototype = {

@@ -11,8 +11,9 @@ Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, oth
     this.labTestOrderObsMap = labOrders;
     this.encounterConfig = encounterConfig;
     this.radiologyDocs = radiologyDocs;
-    this.ipdDrugSchedule = this.hasAdmissionEncounter() ? Bahmni.Clinical.DrugSchedule.create(this) : null;
+
     var orderGroup = new Bahmni.Clinical.OrderGroup();
+    this.ipdDrugSchedule = this.hasAdmissionEncounter() ? Bahmni.Clinical.DrugSchedule.create(this) : null;
     this.drugOrderGroups = orderGroup.group(drugOrders);
     this.otherInvestigationGroups = orderGroup.group(otherInvestigations);
 
@@ -26,6 +27,13 @@ Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, oth
     });
 
     this.tabularResults =  Bahmni.Clinical.TabularLabResults.create(testOrders, this.admissionDate, this.visitEndDate);
+    var resultGrouper = new Bahmni.Clinical.ResultGrouper()
+    var observationGroupingFunction = function (obs) { return obs.observationDateTime.substring(0, 10); };
+    this.consultationNoteGroups =  resultGrouper.group(consultationNotes, observationGroupingFunction, 'obs', 'date')
+    this.observationGroups =  resultGrouper.group(observations, observationGroupingFunction, 'obs', 'date')
+    this.observationGroups.forEach(function(observationGroup){
+        observationGroup.obs = new Bahmni.Clinical.CompoundObservation(observationGroup.obs);
+    });
 }
 
 Bahmni.Clinical.Visit.prototype = {
@@ -92,8 +100,7 @@ Bahmni.Clinical.Visit.prototype = {
     },
     _getEncounterWithDisposition: function(dispositionCode) {
         return this.encounters.filter(function(encounter){ 
-            if(encounter.dispositions) 
-                return encounter.dispositions.some(function(disposition) { return disposition.code === dischargeCode; });
+            return encounter.disposition && encounter.disposition.code === dispositionCode;
         })[0];
     },
     getDischargeDispositionEncounterDate: function() {
@@ -103,10 +110,9 @@ Bahmni.Clinical.Visit.prototype = {
 };
 
 Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNoteConcept, labOrderNoteConcept, encounterConfig, allTestAndPanels) {
-    var drugOrders, consultationNotes, otherInvestigations, observations, diagnoses = [], dispositions = [],
+    var drugOrders, otherInvestigations, diagnoses = [], dispositions = [],
         orderGroup = new Bahmni.Clinical.OrderGroup(),
         orderGroupWithObs = new Bahmni.Clinical.OrderGroupWithObs(),
-        resultGrouper = new Bahmni.Clinical.ResultGrouper(),
         ArrayUtil = Bahmni.Common.Util.ArrayUtil,
         isLabTests = function (order) {
             var labTestOrderTypeUuid = encounterConfig.orderTypes[Bahmni.Clinical.Constants.labOrderType];
@@ -122,9 +128,6 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
             return concepts.some(function (concept) {
                 return observation.concept.uuid === concept.uuid;
             });
-        },
-        observationGroupingFunction = function (obs) {
-            return obs.observationDateTime.substring(0, 10);
         },
         isConsultationNote = function (observation) {
             return conceptMatches(observation, [consultationNoteConcept])
@@ -230,11 +233,8 @@ Bahmni.Clinical.Visit.create = function (encounterTransactions, consultationNote
     mapAccessionNotes(encountersWithTestOrders);
 
     var allObs = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions);
-    consultationNotes = resultGrouper.group(allObs.filter(isConsultationNote), observationGroupingFunction, 'obs', 'date');
-    observations = resultGrouper.group(allObs.filter(isOtherObservation).filter(doesNotHaveOrder), observationGroupingFunction, 'obs', 'date');
-    observations.forEach(function(observation){
-        observation.obs = new Bahmni.Clinical.CompoundObservation(observation.obs);
-    });
+    var consultationNotes = allObs.filter(isConsultationNote);
+    var observations = allObs.filter(isOtherObservation).filter(doesNotHaveOrder);
 
     angular.forEach(encounterTransactions, function (encounterTransaction) {
         angular.forEach(encounterTransaction.bahmniDiagnoses, function (diagnosis) {

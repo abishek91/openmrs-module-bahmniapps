@@ -45,7 +45,7 @@ Bahmni.Clinical.Result = (function () {
             return new Bahmni.Clinical.Result({
                 name: realObs.concept.name,
                 value: realObs.value,
-                isAbnormal: valueOf(observationList, "LAB_ABNORMAL") === 'true',
+                isAbnormal: valueOf(observationList, "LAB_ABNORMAL") === true,
                 minNormal: valueOf(observationList, "LAB_MINNORMAL"),
                 maxNormal: valueOf(observationList, "LAB_MAXNORMAL"),
                 notes: latestMatchingObservationValue(observationList, "LAB_NOTES"),
@@ -56,7 +56,7 @@ Bahmni.Clinical.Result = (function () {
         } else {
             return new Bahmni.Clinical.Result({
                 name: parentName,
-                isAbnormal: valueOf(observationList, "LAB_ABNORMAL") === 'true',
+                isAbnormal: valueOf(observationList, "LAB_ABNORMAL") === true,
                 minNormal: valueOf(observationList, "LAB_MINNORMAL"),
                 maxNormal: valueOf(observationList, "LAB_MAXNORMAL"),
                 notes: latestMatchingObservationValue(observationList, "LAB_NOTES"),

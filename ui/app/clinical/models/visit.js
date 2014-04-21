@@ -22,14 +22,10 @@ Bahmni.Clinical.Visit = function (encounters, drugOrders, consultationNotes, oth
 
     var testOrders = [];
     this.labTestOrderObsMap.forEach(function(labOrderObsMap){
-        console.log(labOrderObsMap.displayList);
         testOrders = testOrders.concat(labOrderObsMap.displayList);
     });
 
-    this.tabularResults =  Bahmni.Clinical.TabularLabResults.create(testOrders,this.admissionDate,this.visitEndDate);
-
-    console.log(this.tabularResults);
-    console.log(this.tabularResults.getRows());
+    this.tabularResults =  Bahmni.Clinical.TabularLabResults.create(testOrders, this.admissionDate, this.visitEndDate);
 }
 
 Bahmni.Clinical.Visit.prototype = {

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('CreatePatientController', ['$scope', '$rootScope','patientService', 'visitService','$location', 'Preferences', '$route', 'patient', '$window', 'spinner', 'registrationCardPrinter', 'appService', '$timeout',
-    function ($scope, $rootScope, patientService, visitService, $location, preferences, $route, patientModel, $window, spinner, registrationCardPrinter, appService, $timeout) {
+    .controller('CreatePatientController', ['$scope', '$rootScope','patientService', 'visitService','$location', 'Preferences', '$route', 'patient', '$window', 'spinner', 'registrationCardPrinter', 'appService', '$timeout','hotkeys',
+    function ($scope, $rootScope, patientService, visitService, $location, preferences, $route, patientModel, $window, spinner, registrationCardPrinter, appService, $timeout, hotkeys) {
         var dateUtil = Bahmni.Common.Util.DateUtil;
         var createActionsConfig = [];
         var defaultActions = ["save", "print", "startVisit"];
@@ -22,6 +22,21 @@ angular.module('bahmni.registration')
             $scope.createActions = createActions;
         };
 
+        var visitKeyBoardShortCuts = appService.getAppDescriptor().getConfigValue("visitTypeKeyBoardShortCuts");
+        visitKeyBoardShortCuts.forEach(function(keyboardShortcut){
+            hotkeys.add({
+                combo: keyboardShortcut.keyBoardShortCut,
+                description: 'Create new OPD - NEW visit',
+                callback: function() {
+                    var visitType = {name:keyboardShortcut.visitType, uuid: $scope.visitControl.visitTypes.filter(function(visitType) { return visitType.name === keyboardShortcut.visitType})[0].uuid}
+                    $scope.visitControl.startVisit(visitType);
+                    $scope.create();
+                    event.preventDefault();
+                }
+            });
+        });
+
+
         (function () {
             $scope.patient = patientModel.create();
             $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
@@ -33,7 +48,8 @@ angular.module('bahmni.registration')
             identifyEditActions();
         })();
 
-        $scope.visitControl = new Bahmni.Registration.VisitControl($rootScope.regEncounterConfiguration.getVistTypesAsArray(), defaultVisitType, visitService);
+        var vistTypesAsArray = $rootScope.regEncounterConfiguration.getVistTypesAsArray();
+        $scope.visitControl = new Bahmni.Registration.VisitControl(vistTypesAsArray, defaultVisitType, visitService);
         $scope.visitControl.onStartVisit = function() {
             $scope.setSubmitSource('startVisit');
         };

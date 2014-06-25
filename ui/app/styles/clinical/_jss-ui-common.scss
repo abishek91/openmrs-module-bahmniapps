@@ -681,6 +681,11 @@ pre {
   background: #fff;
 }
 
+.ngdialog-open #overlay{
+  background : white;
+  opacity: 1;
+}
+
 .ngdialog-content {
     font-size: 14px!important;
     color: #333;

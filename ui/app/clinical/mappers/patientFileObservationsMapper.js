@@ -6,8 +6,7 @@ Bahmni.Clinical.PatientFileObservationsMapper = function () {
             encounter.obs.forEach(function (parentObservation) {
                 var imageConcept = parentObservation.concept.name;
                 parentObservation.groupMembers.forEach(function (member) {
-                    var documentImage = {};
-                    documentImage = new Bahmni.Common.DocumentImage(
+                    var documentImage = new Bahmni.Common.DocumentImage(
                         {
                             id:member.id,
                             src:"/document_images/" + member.value,

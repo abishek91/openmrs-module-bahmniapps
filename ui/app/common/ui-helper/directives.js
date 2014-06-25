@@ -217,8 +217,10 @@ angular.module('bahmni.common.util')
                         preload:[1, 1],
                         navigateByImgClick: false
                     },
+                    mainClass : "magnific-popup-main-class",
                     type:'image',
-                    items: scope.records
+                    items: scope.records,
+                    closeMarkup: '<div class="magnific-popup-header"><button title="%title%" class="mfp-close">Close<i class="mfp-close-icn">&times;</i></button></div>'
                 };
                 elem.magnificPopup(options);
 

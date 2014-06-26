@@ -220,7 +220,7 @@ angular.module('bahmni.common.util')
                     mainClass : "magnific-popup-main-class",
                     type:'image',
                     items: scope.records,
-                    closeMarkup: '<div class="magnific-popup-header"><button title="%title%" class="mfp-close">Close<i class="mfp-close-icn">&times;</i></button></div>'
+                    closeMarkup: '<div class="magnific-popup-header"><span class="arrow-btn-head"><span class="arrow-btn-body"><button title="%title%" class="mfp-close">Back</button></span></span></div>'
                 };
                 elem.magnificPopup(options);
 

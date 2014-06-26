@@ -22,7 +22,7 @@ angular.module('bahmni.common.uiHelper')
             this.initGallery = function() {
                 var options = {
                     mainClass : "magnific-popup-main-class",
-                    closeMarkup: '<div class="magnific-popup-header"><button class="mfp-close">Close<i class="mfp-close-icn">&times;</i></button></div>',
+                    closeMarkup: '<div class="magnific-popup-header"><span class="arrow-btn-head"><span class="arrow-btn-body"><button title="%title%" class="mfp-close">Back</button></span></span></div>',
                     type:'image',
                     delegate: imageGalleryTarget,
                     key: galleryName,

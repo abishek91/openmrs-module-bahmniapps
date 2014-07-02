@@ -3,8 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes, minimal-ui" />
-        
-        <link rel="stylesheet" href="../components/magnific-popup/dist/magnific-popup.css">
+        <link rel="stylesheet" href="../lib/magnific-popup/magnific-popup.css">
         <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
         <link rel="stylesheet" href="../components/select2/select2.css"/>
         <link rel="stylesheet" href="../components/ngDialog/css/ngDialog.min.css"/>
@@ -38,7 +37,8 @@
         <script src="../components/select2/select2.js"></script>
         <script src="../components/angular-ui-select2/src/select2.js"></script>
         <script src="../components/angular-ui-router/release/angular-ui-router.js"></script>
-        <script src="../components/magnific-popup/dist/jquery.magnific-popup.js"></script>
+        <script src="../lib/magnific-popup/jquery.magnific-popup.js"></script>
+        <script src="../components/fastclick/lib/fastclick.js"></script>
         <script src="../components/ngDialog/js/ngDialog.min.js"></script>
 
         <!-- build:js clinical.min.js -->
@@ -146,6 +146,7 @@
         <script src="controllers/conceptSetPageController.js"></script>
         <script src="services/treatmentService.js"></script>
         <script src="services/drugService.js"></script>
+        <script src="services/labOrderResultService.js"></script>
         <script src="services/diagnosisService.js"></script>
         <script src="services/patientVisitHistoryService.js"></script>
         <script src="services/labTestsProvider.js"></script>
@@ -171,6 +172,7 @@
         <script src="models/selectable.js"></script>
         <script src="models/dischargeSummary.js"></script>
         <script src="models/tabularLabResults.js"></script>
+        <script src="models/tabularLabOrderResults.js"></script>
         <script src="filters/observationValue.js"></script>
         <script src="filters/primaryDiagnosisFirst.js"></script>
         <script src="directives/buttonsRadio.js"></script>

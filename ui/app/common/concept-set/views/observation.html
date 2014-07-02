@@ -24,6 +24,7 @@
                 <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}">
 
                 </textarea>
+
 <!-- Dropdowns won't be supported in release - 3
                 <select ng-switch-when="dropdown" foo-bar ng-model="observation.value"
                         ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet)}"
@@ -34,18 +35,18 @@
                 <span ng-switch-when="dropdown" class="field-value info icon-info-sign"> Dropdowns are not supported. Change it to autocomplete</span>
 
                 <div ng-switch-when="freeTextAutocomplete"  class="autocomplete">
-
                     <input id="{{observation.uniqueId}}" class="concept-name" ng-model="observation.value" concept-autocomplete
-                           coded-concept-uuid="observation.codedPrimaryObs.concept.uuid"
-                           concept-set-uuid="observation.getConceptUIConfig().freeTextAutocomplete.conceptSetUuid"
+                           coded-concept-name="observation.getConceptUIConfig().answersConceptName"
                            blur-on-select="false"
-                            />
+                    />
+                    <!--concept-set-uuid="observation.getConceptUIConfig().freeTextAutocomplete.conceptSetUuid"-->
+                    <!--TODO : check if jss-config is meant to have uuid Mujir, Shruthi-->
 
-                    <div class="checkbox-inline" ng-if="!observation.primaryObs.isCoded()">
-                        <input type="checkbox" ng-model="observation.markedAsNonCoded" required="required"
-                               id="addNewAnswer-{{$index}}">
-
-                        <label class="add-new checkbox-btn" for="addNewAnswer-{{$index}}">Add New?</label>
+                    <div>
+                        <button type="button" ng-model="observation.markedAsNonCoded" class="small-btn"
+                                   ng-click="observation.markAsNonCoded()"
+                               ng-class="{'illegalValue': observation.primaryObs.value.length > 0 && !observation.markedAsNonCoded, active: observation.markedAsNonCoded}"
+                                ng-disabled="observation.primaryObs.isCoded() && observation.primaryObs.value"><span></span>Accept</button>
                     </div>
                 </div>
 
@@ -71,7 +72,7 @@
         </div>
     </fieldset>
 
-    <fieldset class="leaf-observation-node" ng-if="observation.groupMembers.length === 0">
+    <fieldset class="leaf-observation-node" ng-if="observation.isFormElement()">
         <div class="form-group">
             <label class="control-label" for="{{observation.uniqueId}}">
                 <span ng-bind="observation.label"></span>
@@ -90,6 +91,16 @@
 
                 <textarea id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value"
                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"></textarea>
+
+                <!--{{observation.groupMembers}}-->
+                <div ng-switch-when="grid">
+                    <div  ng-repeat="member in observation.groupMembers" class="grid-row">
+                        <grid-row observation="member" ></grid-row>
+                    </div>
+                </div>
+
+
+
                 <!-- Dropdowns won't be supported in release - 3
                                 <select ng-switch-when="dropdown" foo-bar ng-model="observation.value"
                                         ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"
@@ -97,7 +108,7 @@
                                 </select>
 
                  -->
-                <span ng-switch-when="dropdown" class="field-value info icon-info-sign"> Dropdowns are not supported. Change it to autocomplete</span>
+                <!--<span ng-switch-when="dropdown" class="field-value info icon-info-sign"> Dropdowns are not supported. Change it to autocomplete</span>-->
 
 
                 <input id="{{observation.uniqueId}}" ng-switch-when="freeTextAutocomplete" class="concept-name" ng-model="observation.value" concept-autocomplete
@@ -119,7 +130,7 @@
         </div>
     </fieldset>
 
-    <fieldset ng-if="!observation.isObservationNode && observation.groupMembers.length !== 0" class="hasLegend">
+    <fieldset ng-if="!observation.isObservationNode && !observation.isFormElement()" class="hasLegend">
         <legend ng-if="showTitle" class="mylegend"><strong>{{observation.label}}</strong></legend>
         <div class="form-group">
             <div class="form-field form-field-group" ng-repeat="member in observation.groupMembers">

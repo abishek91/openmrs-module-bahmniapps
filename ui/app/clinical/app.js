@@ -2,7 +2,7 @@
 
 angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.patient', 'bahmni.common.uiHelper', 'bahmni.common.patientSearch',
     'bahmni.common.domain', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework', 'bahmni.adt',
-    'httpErrorInterceptor', 'pasvaz.bindonce', 'opd.patientDashboard', 'infinite-scroll', 'bahmni.common.util', 'ngAnimate','ngDialog']);
+    'httpErrorInterceptor', 'pasvaz.bindonce', 'opd.patientDashboard', 'infinite-scroll', 'bahmni.common.util', 'ngAnimate','ngDialog', 'ngTouch','angular-gestures']);
 angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/patient/search');
         $stateProvider
@@ -43,6 +43,16 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                     'content': {
                         templateUrl: 'views/dashboard.html',
                         controller: 'PatientDashboardController'
+                    }
+                }
+            })
+            .state('patient.gallery', {
+                url: '/gallery',
+                views: {
+                    'additional-header': { templateUrl: 'views/dashboardHeader.html' },
+                    'content': {
+                        templateUrl: 'views/gallery.html',
+                        controller: 'imageGalleryController'
                     }
                 }
             })

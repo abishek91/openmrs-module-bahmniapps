@@ -3,7 +3,7 @@
     <section class="block" ng-class="{'more': radiologyRecords.show}">
         <ul>
             <li ng-repeat="radiologyRecord in radiologyRecords" class="radiology-doc-item">
-                <a ng-href="" show-items records="radiologyRecord.records"><i class="icon-file"></i>{{radiologyRecord.name}}</a>
+                <a gallery-dialog="radiologyRecord.records" patient="patient">{{radiologyRecord.name}}</a>
                 <span>{{radiologyRecord.date | date:'dd MMM yy'}}</span>
             </li>
         </ul>

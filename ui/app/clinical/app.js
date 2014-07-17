@@ -46,16 +46,6 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                     }
                 }
             })
-            .state('patient.gallery', {
-                url: '/gallery',
-                views: {
-                    'additional-header': { templateUrl: 'views/dashboardHeader.html' },
-                    'content': {
-                        templateUrl: 'views/gallery.html',
-                        controller: 'imageGalleryController'
-                    }
-                }
-            })
             .state('patient.visit', {
                 url: '/dashboard/visit/:visitUuid',
                 views: {

@@ -64,7 +64,7 @@
 	height: 500px;
 	margin: 20px auto;
 	position: relative;
-	width: 800px;
+	width: 100%;
 
 	-webkit-perspective: 1000px;
 	-moz-perspective: 1000px;
@@ -79,14 +79,12 @@
 	transform-style: preserve-3d;
 }
 .slide {
+	margin: auto;
 	position: absolute;
-	top: 0;
-	left: 0;
+	top: 0; left: 0; bottom: 0; right: 0;
 	max-width: 100%;
 }
-//.slide:hover {
-//	-webkit-transform: scale(2);
-//}
+
 .slide.ng-hide-add {
 	opacity:1;
 

@@ -33,6 +33,7 @@ Bahmni.Common = Bahmni.Common || {};
         openmrsUrl: "/openmrs",
         idgenConfigurationURL: RESTWS_V1 + "/idgen/identifiersources",
         bahmniRESTBaseURL: BAHMNI_CORE + "",
+        observationsUrl: BAHMNI_CORE + "/observations",
         allTestsAndPanelsConceptName : 'All_Tests_and_Panels',
         dosageFrequencyConceptName : 'Dosage Frequency',
         dosageInstructionConceptName : 'Dosage Instructions',
@@ -66,7 +67,9 @@ Bahmni.Common = Bahmni.Common || {};
         durationConceptClassName: 'Duration',
         conceptDetailsClassName: 'Concept Details',
         admissionEncounterTypeName: 'ADMISSION',
-        dischargeEncounterTypeName: 'DISCHARGE'
+        dischargeEncounterTypeName: 'DISCHARGE',
+        opdEncounterName: 'OPD',
+        imageClassName: 'Image'
 };
     
 })();

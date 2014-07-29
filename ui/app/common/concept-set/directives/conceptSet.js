@@ -3,7 +3,7 @@
 angular.module('bahmni.common.conceptSet')
     .directive('concept', [function () {
         var controller = function ($scope, $q, $filter) {
-            var conceptMapper = new Bahmni.ConceptSet.ConceptMapper();
+            var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
             $scope.showTitle = $scope.showTitle === undefined ? true : $scope.showTitle;
 
             $scope.selectOptions = function(codedConcept){
@@ -58,7 +58,7 @@ angular.module('bahmni.common.conceptSet')
             '</form>';
 
         var numberOfLevels = appService.getAppDescriptor().getConfigValue('maxConceptSetLevels') || 4;
-        var fields = ['uuid','name','set','hiNormal','lowNormal','units','conceptClass','datatype', 'answers:(uuid,name,displayString,names)', 'descriptions'];
+        var fields = ['uuid','name','set','hiNormal','lowNormal','units','conceptClass','datatype', 'handler', 'answers:(uuid,name,displayString,names)', 'descriptions'];
         var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
 
         var controller = function ($scope, conceptSetService, conceptSetUiConfigService, spinner) {
@@ -147,6 +147,6 @@ angular.module('bahmni.common.conceptSet')
                     return  shortName  ? shortName.name : answer.displayString;
                 };
             },
-            template:"<span ng-repeat='answer in observation.possibleAnswers'><button class='grid-row-element' ng-class='{active: observation.value.uuid == answer.uuid}' ng-click='select(answer)'><i class='icon-ok'></i>{{getAnswerDisplayName(answer)}}</button></span>"
+            template:"<span ng-repeat='answer in observation.possibleAnswers'><button type='button' class='grid-row-element' ng-class='{active: observation.value.uuid == answer.uuid}' ng-click='select(answer)'><i class='icon-ok'></i>{{getAnswerDisplayName(answer)}}</button></span>"
         };
     });;

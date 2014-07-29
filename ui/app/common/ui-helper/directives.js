@@ -178,55 +178,22 @@ angular.module('bahmni.common.util')
             }, 0);
         }
     })
-    .directive("popUp", function () {
+    .directive("popUp", function (imageObservationGalleryControl) {
         var link = function (scope, elem) {
             var items = [];
-            scope.onClickHandler()().then(function (response) {
-                items = new Bahmni.Clinical.PatientFileObservationsMapper().mapToDisplayItems(response.data.results);
-                var inlineItems = [
-                    {
-                        src:'<div class="white-popup">No patient documents uploaded</div>',
-                        type:'inline'
-                    }
-                ];
-                items = items.length == 0 ? inlineItems : items;
-                var options = {
-                    gallery:{
-                        enabled:true,
-                        preload:[1, 1],
-                        navigateByImgClick: false
-                    },
-                    type:'image',
-                    items:items
-                };
-                elem.magnificPopup(options);
+            $(elem).click(function(){
+                scope.onClickHandler()().then(function (response) {
+                    scope.records = new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
+                    scope.title = "Patient Documents"
+                    imageObservationGalleryControl.open(scope);
+                });
             });
         };
         return {
             link: link,
             scope: {
-                onClickHandler: "&"
-            }
-        }
-    })
-    .directive("showItems", function () {
-        var link = function (scope, elem) {
-            var options = {
-                    gallery:{
-                        enabled:true,
-                        preload:[1, 1],
-                        navigateByImgClick: false
-                    },
-                    type:'image',
-                    items: scope.records
-                };
-                elem.magnificPopup(options);
-
-        };
-        return {
-            link: link,
-            scope: {
-                records: "="
+                onClickHandler: "&",
+                patient: "="
             }
         }
     });

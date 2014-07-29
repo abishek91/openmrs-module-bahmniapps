@@ -48,6 +48,10 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.getDataTypeName() === "Coded";
     },
 
+    isImage: function () {
+        return this.concept.conceptClass == Bahmni.Common.Constants.imageClassName;
+    },
+
     getDataTypeName: function () {
         return this.concept.dataType;
     },
@@ -83,6 +87,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     getControlType: function () {
         if (this.getConceptUIConfig().freeTextAutocomplete) return "freeTextAutocomplete";
         if (this.isHtml5InputDataType()) return "html5InputDataType";
+        if (this.isImage()) return "image";
         if (this.isText()) return "text";
         if (this.isCoded()) return this._getCodedControlType();
         if (this.isGrid()) return "grid";
@@ -156,6 +161,10 @@ Bahmni.ConceptSet.Observation.prototype = {
 
     markAsNonCoded: function() {
       this.markedAsNonCoded = !this.markedAsNonCoded;
+    },
+
+    toggleVoidingOfImage: function() {
+        this.voided = !this.voided;
     }
 
 };

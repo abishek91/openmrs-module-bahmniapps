@@ -27,10 +27,11 @@
   height: 50px;
   background: #669999;
   h1 {
-    float: left;
+    // float: left;
     margin: 15px 0;
     color: #eee;
     text-transform: capitalize;
+    display: inline-block;
   }
 }
 .dashboard-section {
@@ -45,7 +46,7 @@
     padding: 10px;
     font-family: OpenSansBold;
     margin-bottom: 0;
-    cursor: pointer;
+    // cursor: pointer;
     &:active {
         background: #e1f9fe;
         color: #52957e;
@@ -83,10 +84,16 @@
       border-bottom: 1px solid #ccc;
       padding: 5px;
       font-size: 14px;
+      padding-left: 10px;
+      clear: both;
+      overflow: auto;
       .field-attribute {
-        width: 50%;
+        width: 45%;
         display: inline-block;
       }
+    .value-text-only {
+        display: inline-block;
+    }
       .time {
         font-size: 11px;
         color: #888;
@@ -207,6 +214,10 @@
       float: right;
       font-size: 11px;
       color: #888;
+      i.icon-file-alt {
+        font-size: 14px;
+        color: orange;
+      }
     }
   }
 }
@@ -252,6 +263,17 @@
     i.icon-external-link {
         color: #007fff;
         padding-right: 0;
+    }
+}
+.dashboard-section section .form-field.is-text {
+    overflow: auto;
+    clear: both;
+    padding-left: 10px;
+    .value-text-only {
+        line-height: 1.3em;
+    }
+    .footer-note {
+        margin-top: 5px;
     }
 }
 

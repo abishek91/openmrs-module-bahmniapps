@@ -1,7 +1,7 @@
 <div ng-controller="PatientDashboardTreatmentController" class="dashboard-treatment-section">
     <h2 ng-dialog="views/dashboardSections/allTreatments.html"
         ng-dialog-class="ngdialog-theme-flat ngdialog-theme-custom"
-        ng-dialog-controller="PatientDashboardAllTreatmentController">{{section.description}}<button class="fr toggle btn-expand"><i class="icon-external-link"></i></button></h2>
+        ng-dialog-controller="PatientDashboardAllTreatmentController">{{section.title}}<button class="fr toggle btn-expand"><i class="icon-external-link"></i></button></h2>
 
     <section class="block treatment-section" ng-class="{'more': drugOrders.show}">
         <table ng-repeat="drugOrderSection in drugOrderSections">
@@ -14,15 +14,13 @@
                 </tr>
                 <tr ng-repeat="drugOrder in drugOrderSection.orders" ng-show="drugOrderSection.orders.length">
                     <td class="drug"><h5>{{drugOrder.name}} </h5></td>
-                    <td class="dosage">{{drugOrder.dose}} <span>{{drugOrder.dosage}}</span></td>
+                    <td ng-if="drugOrder.isFreeTextDosingType()" class="dosage">{{drugOrder.dosingInstructions|formatDecimalValues}}</td>
+                    <td ng-if="drugOrder.isSimpleDosingType()" class="dosage">Not yet implemented</td>
                     <td class="days"><span>From </span>{{drugOrder.orderDate | date:'dd MMM yy'}}<br /><span> for </span>{{drugOrder.days}}
                         day(s)
                     </td>
                 </tr>
             </tbody>
         </table>
-        <button class="show-more" ng-if="drugOrderSection.orders.length > 6" ng-click="toggle(drugOrderSection.orders)">
-            <span class="more-text">Show more</span><span class="less-text">Show less</span>
-        </button>
     </section>
 </div>

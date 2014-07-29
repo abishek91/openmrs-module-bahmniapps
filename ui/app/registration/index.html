@@ -14,7 +14,7 @@
             <div ng-app="registration">
                 <div id="overlay"><div></div></div>
                 <header class="reg-header" ng-controller="NavigationController">
-                        <a class="header-logo" href="../home"><img src="../images/jss_logo.png" alt="Bahmni" title="Bahmni"></a>                        
+                        <a class="header-logo" href="../home/"><img src="../images/jss_logo.png" alt="Bahmni" title="Bahmni"></a>
                         <button class="btn-user-info">
                             <i class="icon-user-md icon-white small"></i>
                             <i class="icon-caret-down icon-white mini"></i>
@@ -62,6 +62,7 @@
         <script src="../common/domain/init.js"></script>
         <script src="../common/domain/services/configurationService.js"></script>
         <script src="../common/domain/observationFilter.js"></script>
+        <script src="../common/domain/mappers/conceptMapper.js"></script>
 
         <script src="../common/domain/services/encounterService.js"></script>
         <script src="../common/domain/encounterConfig.js"></script>
@@ -100,8 +101,8 @@
         <script src="../common/concept-set/mappers/observationMapper.js"></script>
         <script src="../common/concept-set/services/conceptSetServices.js"></script>
         <script src="../common/concept-set/services/conceptSetUiConfigService.js"></script>
-        <script src="../common/concept-set/mappers/conceptMapper.js"></script>
-
+        <script src="../common/ui-helper/filters/thumbnail.js"></script>
+        
         <script src="init.js"></script>
         <script src="app.js"></script>
         <script src="initialization.js"></script>

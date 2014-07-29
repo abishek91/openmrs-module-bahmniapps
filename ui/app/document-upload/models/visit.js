@@ -13,21 +13,10 @@ Bahmni.DocumentUpload.Visit = function () {
     this._sortSavedImages = function(savedImages) {
         var sortedSavedImages = [];
         var conceptUuids = [];
-
         savedImages.sort(function(image1,image2){
-            return image2.id - image1.id
+            return image2.id - image1.id;
         });
-
-        savedImages.forEach(function(image){
-            if(conceptUuids.indexOf(image.concept.uuid) < 0){
-                var groupedImages = savedImages.filter(function(img){
-                    return img.concept.uuid === image.concept.uuid;
-                });
-                sortedSavedImages = sortedSavedImages.concat(groupedImages);
-                conceptUuids.push(image.concept.uuid);
-            }
-        });
-        return sortedSavedImages;
+        return savedImages;
     };
 
     this.initSavedImages = function () {
@@ -43,7 +32,7 @@ Bahmni.DocumentUpload.Visit = function () {
                             id:member.id,
                             encodedValue: Bahmni.Common.Constants.documentsPath + '/' + member.value,
                             obsUuid: observation.uuid,
-                            obsDatetime: observation.obsDatetime,
+                            obsDatetime: member.obsDatetime,
                             visitUuid: encounter.visit.uuid,
                             encounterUuid: encounter.uuid,
                             providerUuid: encounter.provider.uuid,

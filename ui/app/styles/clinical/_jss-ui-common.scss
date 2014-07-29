@@ -197,9 +197,9 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
   ul{
     li{
         float:left;
-        margin-bottom: -2px;
+        // margin-bottom: -2px;
         a,button{
-          padding: 10px 15px;
+          padding: 12px 15px;
           background:#447772;
           display:inline-block;
           color:#fff;
@@ -224,7 +224,7 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
               border:1px solid #cecece;
               border-bottom:none;
               outline:none;
-              padding-bottom: 11px;
+              padding-bottom: 14px;
         }
         &.tab-selected button{
               top:4px;
@@ -312,7 +312,7 @@ form .select-arrow:after, .form .select-arrow:after{height:29px;}
 }
 .tabs ul li a {
   @media screen and (max-width: 959px) {
-      padding: 10px;
+      padding: 13px 10px;
       font-size: 14px;
   }
 }
@@ -477,6 +477,11 @@ button:focus, a:focus, .btn:focus {outline:0;}
 button.save-consultation, .quick-links {
   float: right;
   margin: 6px 20px;
+  padding: 8px 50px;
+  @media screen and (max-width: 959px) {
+    padding: 8px 20px;
+  }
+
 }
 
 a.quick-links {
@@ -494,8 +499,10 @@ button.toggle-patient {
   -webkit-box-shadow: 0 0 5px#888;
   box-shadow: 0 0 5px #888;
 }
-
-button.toggle-patient:hover, button.toggle-patient.shift {
+button.toggle-patient:hover {
+    opacity: 0.8;
+}
+button.toggle-patient.shift {
   background: #4d8282 url("../images/bars.png") no-repeat center center;
 }
 
@@ -518,12 +525,12 @@ aside{
   }
   &.visit-history{
     position:absolute;
-    width:250px;
+    width:300px;
     background:#333333;
     bottom: 0;
-    top: 0;
+    top: 50px;
     box-shadow: -3px 5px 10px #777;
-    z-index: 10;
+    z-index: 5;
     h2 {
       color: #666;
       font-size: 14px;
@@ -551,6 +558,9 @@ aside{
         color: #bbb;
       }
     }
+    li a.log-out {
+        cursor: pointer;
+    }
     li:last-child a {
       border-bottom: 0;
     }
@@ -558,15 +568,22 @@ aside{
       padding-bottom: 10px;
       .patient-img img {
         border-radius: 10px;
-        margin: 15px 52px;
-        width: 150px;
+        margin: 10px;
+        width: 50px;
+        float: left;
+        display: block;
+      }
+      .patient-handler {
+        float: right;
+        width: 230px;
+        margin-top: 20px;
       }
       h4, h5, .ward {
         color: #ddd;
         display: block;
         padding-left: 10px;
         font-size: 14px;
-        text-align: center;
+        text-align: left;
       }
       h4.patient-name {
         text-transform: capitalize; font-size: 16px; 
@@ -649,26 +666,34 @@ pre.chief-notes {
 pre {
   background: none;
 }
-
 .patient-details {
-  margin-top: 21px;
-  color: #eee;
-  text-transform: capitalize;
-  display: inline-block;
-  width: 25%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: right;
-  @media screen and (min-width: 959px) and (max-width: 979px) {
-    width: 20%;
-  }
-  @media screen and (min-width: 769px) and (max-width: 912px) {
-    width: 15%;
-  }
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
+    display: inline-block;
+    position: absolute;
+    top: 56px;
+    right: 10px;
+    z-index: 1;
+}
+.patient-details a {
+    text-transform: capitalize;
+    width: 22%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right;
+    background: #eee;
+    padding: 5px 10px;
+    border-radius: 0 0 5px 5px;
+    color: #007fff;
+    box-shadow: 0px 4px 5px -2px #ccc;
+    right: 5px;
+    border: 1px solid #ccc;
+    border-top: 0;
+    &:hover {
+        text-decoration: none;
+    }
+    @media screen and (max-width: 768px) {
+        display: none;
+    }
 }
 
 .ui-autocomplete {
@@ -707,4 +732,37 @@ pre {
 
 .current-visit-icon {
 	color: #E8A000;
+}
+
+.has-notes {
+    color: orange;
+}
+//home
+.bahmni-home {
+    margin-bottom: 5px!important;
+    .icon-home {
+        color: #eee;
+        margin-right: 5px;
+        font-size: 18px;
+    }
+}
+
+//Back button
+.back-arrow-head {
+    background: url(../images/sprites.png) no-repeat;
+    background-position: 0 -108px;
+    padding-left: 20px;
+    margin: 2px;
+    cursor: pointer;
+    opacity: 0.6;
+}
+.back-arrow-body {
+    padding: 15px 10px 15px 0px!important;
+    background: url(../images/sprites.png) repeat-x 0 -181px!important;
+    display: inline-block!important;
+    border-radius: 5px!important;
+    border: 0!important;
+    border-right: 1px solid #A09F9F!important;
+    color: #fff!important;
+    text-decoration: none!important;
 }

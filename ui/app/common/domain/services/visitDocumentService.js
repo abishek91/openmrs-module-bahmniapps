@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('opd.documentupload')
+angular.module('bahmni.common.domain')
   .service('visitDocumentService', ['$http', function ($http) {
     this.save = function (visitDocument) {
         var url = "/openmrs/ws/rest/v1/bahmnicore/visitDocument";

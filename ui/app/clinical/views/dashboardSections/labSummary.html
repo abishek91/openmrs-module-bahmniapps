@@ -1,5 +1,5 @@
 <header class="template-header">
-    <span class="btn-wrap"><button class="ngdialog-close template-back">Back</button></span>
+    <button class="ngdialog-close back-btn">Back</button>
     <h1>
         <i class="icon-user"></i> 
         <span>{{patient.name}} {{'(' + patient.identifier + ')'}}</span>
@@ -53,7 +53,7 @@
         </section>
 
         <section>
-            <h2>Lab Investigations</h2>
+            <h2>Lab Investigations (without Accession Notes)</h2>
 
             <table ng-repeat="labOrderResults in labAccessions" bindonce="labAccessions">
                 <thead>
@@ -62,20 +62,39 @@
                         <span bo-text="labOrderResults[0].accessionDateTime | date:'dd-MMM-yyyy HH:mm'"></span>
                     </th>
                 </thead>
-                <tbody>
-                    <tr ng-repeat="labOrderResult in labOrderResults">
-                        <td>
+                <tbody ng-repeat="labOrderResult in labOrderResults">
+                    <tr ng-if="labOrderResult.isPanel" class="header">
+                        <td colspan="3"><strong>{{labOrderResult.orderName}}</strong></td>
+                    </tr>
+
+                    <tr ng-if="!labOrderResult.isPanel" ng-click="toggle(labOrderResult)">
+                        <td ng-class="{'testUnderPanel': labOrderResult.panelName != null}">
                             <span bo-text="labOrderResult.testName"></span>
                             <span ng-show="labOrderResult.hasRange" class="range">
                                 <span bo-text="'(' + labOrderResult.minNormal + ' - ' + labOrderResult.maxNormal + ')'"></span>
                                 <span ng-show="labOrderResult.testUnitOfMeasurement" class="units" bo-text="labOrderResult.testUnitOfMeasurement"></span>
                             </span>
                         </td>
-                        <td class="value">
+                        <td class="value has-toggle-btn">
                             <span ng-class="{'referred-out': labOrderResult.referredOut}">
                                 <span class="referred">Referred Out</span>
                             </span>
                             <span ng-show="labOrderResult.result" ng-class="{'is-abnormal': labOrderResult.abnormal}" class="value" bo-text="labOrderResult.result"></span>
+                        </td>
+                        <td class="toggle-btn">
+                            <button class="toggle fr" ng-class="{'has-notes': labOrderResult.notes}">
+                                <i class="icon-plus-sign" ng-hide="labOrderResult.showNotes"></i>
+                                <i class="icon-minus-sign" ng-show="labOrderResult.showNotes"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr ng-show="labOrderResult.showNotes">
+                        <td colspan="3" class="notes inline-notes">
+                            <strong class="left">Lab Tech Notes: </strong>
+                            <pre class="left">{{labOrderResult.notes}}</pre>
+                            <div class="footer-note right">
+                                <span class="provider" bo-text="labOrderResult.provider"></span>
+                            </div>
                         </td>
                     </tr>
                 </tbody>

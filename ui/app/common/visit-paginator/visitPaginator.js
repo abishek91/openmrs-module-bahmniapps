@@ -1,9 +1,9 @@
-angular.module('bahmni.clinical')
+angular.module('bahmni.common.paginator')
     .directive('visitPaginationLinks', ['$rootScope', '$state', function ($rootScope, $state) {
         var link = function ($scope) {
 
             var visits = _.clone($scope.visits).reverse();
-            
+
             var visitIndex = _.findIndex(visits, function(visitHistoryEntry) {
                 return $scope.currentVisit != null && visitHistoryEntry.uuid == $scope.currentVisit.uuid;
             });
@@ -44,7 +44,7 @@ angular.module('bahmni.clinical')
                 previousFn: "&"
             },
             link: link,
-            templateUrl: 'views/visitPagination.html'
+            templateUrl: '../common/visit-paginator/visitPagination.html'
         }
     }])
 ;

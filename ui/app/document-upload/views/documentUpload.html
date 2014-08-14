@@ -4,8 +4,9 @@
 </div>
 
 <ul class="doc-upload-accordion">
-  <li id="newVisit" bm-gallery patient="patient" title="'Consultation Images'">
-    <h1 ng-click="resetCurrentVisit(newVisit)">
+    {{visit}}
+  <li id="gallery-new-visit" bm-gallery patient="patient" visits="allVisits" next-fn="openGallery" previous-fn="openGallery" current-visit="newVisit" title="'Consultation Images'">
+      <h1 ng-click="resetCurrentVisit(newVisit)">
       <i ng-hide="isCurrentVisit(newVisit)" class="icon-plus-sign state"></i>
       <i ng-if="isCurrentVisit(newVisit)" class="icon-minus-sign state"></i>
       Visit: New
@@ -81,7 +82,7 @@
     </div>
   </li>
 
-  <li ng-repeat="visit in visits" bm-gallery patient="patient" title="'Consultation Images'">
+  <li ng-repeat="visit in visits" bm-gallery patient="patient" visits="allVisits" next-fn="openGallery" previous-fn="openGallery" current-visit="visit" title="'Consultation Images'" id="gallery-{{visit.uuid}}">
     <h1 ng-click="resetCurrentVisit(visit)">
       <i ng-hide="isCurrentVisit(visit)" class="icon-plus-sign state"></i>
       <i ng-if="isCurrentVisit(visit)" class="icon-minus-sign state"></i>

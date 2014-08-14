@@ -171,6 +171,7 @@ angular.module('opd.documentupload')
                 promises.push(getTopLevelConcept());
                 $q.all(promises).then(function () {
                     deferrables.resolve();
+                    $scope.allVisits = _.clone($scope.visits).reverse().concat($scope.newVisit);
                 });
                 return deferrables.promise;
             };
@@ -234,7 +235,7 @@ angular.module('opd.documentupload')
                 visit.images.forEach(function (image) {
                     var imageUrl = image.encodedValue.replace(Bahmni.Common.Constants.documentsPath + "/", "");
                     if(!visit.isSaved(image)) {
-                        visitDocument.documents.push({testUuid: image.concept.uuid, image: imageUrl, obsDateTime: getEncounterStartDateTime(visit)})        
+                        visitDocument.documents.push({testUuid: image.concept.uuid, image: imageUrl, obsDateTime: getEncounterStartDateTime(visit)})
                     } else if (image.changed == true) {
                         visitDocument.documents.push({testUuid: image.concept.uuid, image: imageUrl, voided: image.voided, obsUuid: image.obsUuid});
                     }
@@ -298,4 +299,16 @@ angular.module('opd.documentupload')
                     });
                 }));
             };
+
+            $scope.openGallery = function (visitUuid) {
+                var galleryPane = angular.element($("#gallery-pane"));
+                galleryPane.scope().close();
+                var galleryElement;
+                if (visitUuid) {
+                    galleryElement = angular.element($("#gallery-" + visitUuid));
+                } else {
+                    galleryElement = angular.element($("#gallery-new-visit"))
+                }
+                galleryElement.scope().$$childHead.open();
+            }
         }]);

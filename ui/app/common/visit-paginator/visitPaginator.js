@@ -11,7 +11,8 @@ angular.module('bahmni.common.paginator')
             $scope.visitHistoryEntry = visits[visitIndex];
 
             $scope.shouldBeShown = function () {
-                return $state.is('patient.visit');
+                return true;
+//                return $state.is('patient.visit');
             };
 
             $scope.hasNext = function () {

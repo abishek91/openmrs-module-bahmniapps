@@ -4,7 +4,6 @@ angular.module('bahmni.common.uiHelper')
         var controller = function ($scope) {
             $scope.photos = [];
             $scope.imageIndex = 0;
-            
             this.image = function (record) {
                 return {
                     src: Bahmni.Common.Constants.documentsPath + '/' + record.imageObservation.value,
@@ -35,12 +34,23 @@ angular.module('bahmni.common.uiHelper')
             this.open = function () {
                 $compile("<div bm-gallery-pane id='gallery-pane'></div>")($scope);
             };
+
+            $scope.open = this.open;
+
+            $scope.showVisitPaginator = function() {
+                return $scope.patient && $scope.currentVisit && $scope.nextFn && $scope.previousFn;
+            }
+
         };
 
         return {
             controller: controller,
             scope: {
-                patient: "="
+                patient: "=",
+                currentVisit: "=?",
+                visits: "=?",
+                nextFn: "&?",
+                previousFn: "&?"
             }
         }
     }])

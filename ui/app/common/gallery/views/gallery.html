@@ -5,6 +5,7 @@
         <span>{{patient.name}} {{'(' + patient.identifier + ')'}}</span>
     </h1>
     <h2>{{title}}</h2>
+    <span ng-if="showVisitPaginator()" visit-pagination-links next-fn="nextFn()" previous-fn="previousFn()" current-visit="currentVisit" visits="visits"></span>
 </header>
 <div class="container slider">
     <div class="messages" ng-if="!photos.length">

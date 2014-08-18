@@ -31,7 +31,9 @@ angular.module('bahmni.common.gallery')
         }
 
         var controller = function ($scope) {
-            $scope.imageIndex = $scope.imageIndex ? $scope.imageIndex : 0;
+            $scope.imageIndex = $scope.imagePosition.index ? $scope.imagePosition.index : 0;
+            $scope.imageTag = $scope.imagePosition.tag ? $scope.imagePosition.tag : 'defaultTag';
+
             $scope.isActive = function (index) {
                 return $scope.imageIndex == index;
             };

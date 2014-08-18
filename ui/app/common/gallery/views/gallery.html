@@ -4,15 +4,18 @@
         <i class="icon-user"></i>
         <span>{{patient.name}} {{'(' + patient.identifier + ')'}}</span>
     </h1>
+
     <h2>{{title}}</h2>
 </header>
 <div class="container slider">
     <div class="messages" ng-if="!photos.length">
         <p class="messages null-data-message">No images to display</p>
     </div>
-    <div ng-repeat="photo in photos">
-        <img class="slide" hm-swipe-right="showPrev()" hm-swipe-left="showNext()" 
-             ng-show="isActive($index)" ng-src="{{photo.src}}"/>
+    <div ng-repeat="visit in visits">
+        <div ng-repeat="image in visit.images">
+            <img class="slide" hm-swipe-right="showPrev()" hm-swipe-left="showNext()"
+                 ng-show="isActive($index)" ng-src="{{image.src}}"/>
+        </div>
     </div>
     <span ng-if="photos.length > 1" class="arrow prev" ng-click="showPrev()"></span>
     <span ng-if="photos.length > 1" class="arrow next" ng-click="showNext()"></span>

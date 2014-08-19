@@ -106,7 +106,7 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
     this.getConfigValue = function(configName) {
         var config = this.getConfig(configName);
         return config ? config.value : null;
-    }
+    };
 
     this.formatUrl =  function (url, options, useQueryParams) {
         var pattern = /{{([^}]*)}}/g,

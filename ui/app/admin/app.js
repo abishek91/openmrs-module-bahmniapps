@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('bahmni.home', ['ngRoute', 'httpErrorInterceptor', 'bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.appFramework', 'ngCookies'])
+angular.module('bahmni.admin', ['ngRoute', 'httpErrorInterceptor', 'bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.appFramework', 'ngCookies', 'ui.router'])
 .provider('$cookieStore', [function(){
     var self = this;
     self.defaultOptions = {};
@@ -28,26 +28,26 @@ angular.module('bahmni.home', ['ngRoute', 'httpErrorInterceptor', 'bahmni.common
             }
         };
     };
-}]).config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
-    $routeProvider.when('/login', 
-    { 
-        templateUrl: 'views/login.html', 
-        controller: 'LoginController'
-    });
-    $routeProvider.when('/dashboard', 
+}]).config(['$routeProvider', '$httpProvider', '$stateProvider', function ($routeProvider, $httpProvider) {
+    $routeProvider.when('/dashboard',
     {
         templateUrl: '../common/ui-helper/views/dashboard.html',
         controller: 'DashboardController',
         resolve: {
             appName: function () {
-                return 'home'
+                return 'admin'
             }
         }
+    });
+    $routeProvider.when('/csv',
+    {
+        templateUrl: 'views/csvupload.html',
+        controller: 'CSVUploadController'
     });
     $routeProvider.otherwise({redirectTo: '/dashboard'});
     $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 }]).run(function ($rootScope, $templateCache) {
-        //Disable caching view template partials
+//        Disable caching view template partials
         $rootScope.$on('$viewContentLoaded', function () {
             $templateCache.removeAll();
         }

@@ -16,8 +16,8 @@
             <img class="slide" hm-swipe-right="showPrev()" hm-swipe-left="showNext()"
                  ng-show="isActive($index, visit.tag)" ng-src="{{image.src}}"/>
         </div>
-        <span ng-if="visit.tag == imageTag" class="arrow prev" ng-click="showPrev($index)"></span>
-        <span ng-if="visit.tag == imageTag" class="arrow next" ng-click="showNext($index)"></span>
+        <span ng-if="visit.tag == imageTag" class="arrow prev" ng-click="showPrev()"></span>
+        <span ng-if="visit.tag == imageTag" class="arrow next" ng-click="showNext()"></span>
     </div>
 </div>
 <div ng-repeat="visit in visits">
@@ -28,7 +28,7 @@
             </div>
             <span class="image-index fr">({{$index+1}} of {{visit.images.length}})</span>
         </div>
-        <div class="image-desc" ng-if="isActive($index) && photo.desc"><strong>Comments:</strong> {{image.desc}}</div>
+        <div class="image-desc" ng-if="isActive($index, visit.tag) && image.desc"><strong>Comments:</strong> {{image.desc}}</div>
     </div>
 </div>
 

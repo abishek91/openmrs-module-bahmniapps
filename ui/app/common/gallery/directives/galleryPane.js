@@ -38,7 +38,14 @@ angular.module('bahmni.common.gallery')
                 return $scope.imageIndex == index && $scope.imageTag == tag;
             };
 
-            $scope.showPrev = function (visitIndex) {
+            var getVisitIndex = function(){
+                return _.findIndex($scope.visits, function(visit){
+                    return visit.tag == $scope.imageTag;
+                });
+            };
+
+            $scope.showPrev = function () {
+                var visitIndex = getVisitIndex();
                 if ($scope.imageIndex > 0) {
                     --$scope.imageIndex;
                 }
@@ -47,12 +54,16 @@ angular.module('bahmni.common.gallery')
                         visitIndex = $scope.visits.length;
                     }
                     var previousVisit = $scope.visits[visitIndex - 1];
+                    if(previousVisit.images.length == 0){
+                        $scope.showPrev(visitIndex - 1);
+                    }
                     $scope.imageTag = previousVisit.tag;
                     $scope.imageIndex = previousVisit.images.length - 1;
                 }
             };
 
-            $scope.showNext = function (visitIndex, visitImageSize) {
+            $scope.showNext = function () {
+                var visitIndex = getVisitIndex();
                 if ($scope.imageIndex < $scope.visits[visitIndex].images.length - 1) {
                     ++$scope.imageIndex;
                 } else {
@@ -60,6 +71,9 @@ angular.module('bahmni.common.gallery')
                         visitIndex = -1;
                     }
                     var nextVisit = $scope.visits[visitIndex + 1];
+                    if(nextVisit.images.length == 0){
+                        $scope.showNext(visitIndex + 1);
+                    }
                     $scope.imageTag = nextVisit.tag;
                     $scope.imageIndex = 0;
                 }

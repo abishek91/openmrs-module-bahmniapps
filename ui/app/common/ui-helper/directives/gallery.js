@@ -22,32 +22,30 @@ angular.module('bahmni.common.uiHelper')
             };
 
             this.addImage = function (image, tag, prepend) {
-                var visit = _.find($scope.visits, function (visit) {
-                    if (visit.tag === tag) {
-                        if (prepend) {
-                            visit.images.unshift(image);
-                        } else {
-                            visit.images.push(image);
-                        }
-                        return true;
-                    }
-                });
-                if (!visit) {
-                    var newVisit = {
-                        tag: tag,
-                        images: [image]
-                    };
+                var matchingVisit = getMatchingVisit(tag);
+                if (!matchingVisit) {
+                    var newVisit = {};
+                    newVisit.tag = tag;
+                    newVisit.images = [image];
                     $scope.visits.push(newVisit);
+                }else{
+                    prepend ? matchingVisit.images.unshift(image) : matchingVisit.images.push(image);
                 }
                 return $scope.visits[0].images.length - 1;
             };
 
-            this.removeImage = function (image, tag, index) {
-                _.find($scope.visits, function (visit) {
-                    if (visit.tag == tag) {
-                        visit.images.splice(index, 1);
-                    }
+            var getMatchingVisit = function(tag) {
+                return _.find($scope.visits, function (visit) {
+                    return visit.tag == tag;
                 });
+            };
+
+            this.removeImage = function (image, tag, index) {
+                var matchingVisit = getMatchingVisit(tag);
+
+                if(matchingVisit)  {
+                    matchingVisit.images && matchingVisit.images.splice(index, 1);
+                }
             };
 
             this.setIndex = function (tag, index) {
@@ -63,7 +61,8 @@ angular.module('bahmni.common.uiHelper')
         return {
             controller: controller,
             scope: {
-                patient: "="
+                patient: "=",
+                title: "="
             }
         }
     }])

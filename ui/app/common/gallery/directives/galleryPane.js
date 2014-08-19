@@ -38,8 +38,8 @@ angular.module('bahmni.common.gallery')
                 return $scope.imageIndex == index && $scope.imageTag == tag;
             };
 
-            var getVisitIndex = function(){
-                return _.findIndex($scope.visits, function(visit){
+            var getVisitIndex = function () {
+                return _.findIndex($scope.visits, function (visit) {
                     return visit.tag == $scope.imageTag;
                 });
             };
@@ -54,7 +54,7 @@ angular.module('bahmni.common.gallery')
                         visitIndex = $scope.visits.length;
                     }
                     var previousVisit = $scope.visits[visitIndex - 1];
-                    if(previousVisit.images.length == 0){
+                    if (previousVisit.images.length == 0) {
                         $scope.showPrev(visitIndex - 1);
                     }
                     $scope.imageTag = previousVisit.tag;
@@ -71,12 +71,28 @@ angular.module('bahmni.common.gallery')
                         visitIndex = -1;
                     }
                     var nextVisit = $scope.visits[visitIndex + 1];
-                    if(nextVisit.images.length == 0){
+                    if (nextVisit.images.length == 0) {
                         $scope.showNext(visitIndex + 1);
                     }
                     $scope.imageTag = nextVisit.tag;
                     $scope.imageIndex = 0;
                 }
+            };
+
+            $scope.getTotalLength = function () {
+                var totalLength = 0;
+                angular.forEach($scope.visits, function (visit) {
+                    totalLength += visit.images.length;
+                });
+                return totalLength;
+            };
+
+            $scope.getCurrentIndex = function () {
+                var currentIndex = 1;
+                for (var i = 0; i < getVisitIndex(); i++) {
+                    currentIndex += $scope.visits[i].images.length;
+                }
+                return currentIndex + parseInt($scope.imageIndex);
             };
 
             $scope.close = function () {

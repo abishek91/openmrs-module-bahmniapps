@@ -26,7 +26,7 @@
             <div class="fl"><span class="image-title">{{image.title}}</span>
                 <span class="image-date">{{image.date | date: "dd MMM yy"}}</span>
             </div>
-            <span class="image-index fr">({{$index+1}} of {{visit.images.length}})</span>
+            <span class="image-index fr">({{getCurrentIndex()}} of {{getTotalLength()}})</span>
         </div>
         <div class="image-desc" ng-if="isActive($index, visit.tag) && image.desc"><strong>Comments:</strong> {{image.desc}}</div>
     </div>

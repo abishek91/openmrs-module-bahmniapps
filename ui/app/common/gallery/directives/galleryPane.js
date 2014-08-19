@@ -32,65 +32,65 @@ angular.module('bahmni.common.gallery')
 
         var controller = function ($scope) {
             $scope.imageIndex = $scope.imagePosition.index ? $scope.imagePosition.index : 0;
-            $scope.imageTag = $scope.imagePosition.tag ? $scope.imagePosition.tag : 'defaultTag';
+            $scope.albumTag = $scope.imagePosition.tag ? $scope.imagePosition.tag : 'defaultTag';
 
             $scope.isActive = function (index, tag) {
-                return $scope.imageIndex == index && $scope.imageTag == tag;
+                return $scope.imageIndex == index && $scope.albumTag == tag;
             };
 
-            var getVisitIndex = function () {
-                return _.findIndex($scope.visits, function (visit) {
-                    return visit.tag == $scope.imageTag;
+            var getAlbumIndex = function () {
+                return _.findIndex($scope.albums, function (album) {
+                    return album.tag == $scope.albumTag;
                 });
             };
 
             $scope.showPrev = function () {
-                var visitIndex = getVisitIndex();
+                var albumIndex = getAlbumIndex();
                 if ($scope.imageIndex > 0) {
                     --$scope.imageIndex;
                 }
                 else {
-                    if (visitIndex == 0) {
-                        visitIndex = $scope.visits.length;
+                    if (albumIndex == 0) {
+                        albumIndex = $scope.albums.length;
                     }
-                    var previousVisit = $scope.visits[visitIndex - 1];
-                    if (previousVisit.images.length == 0) {
-                        $scope.showPrev(visitIndex - 1);
+                    var previousAlbum = $scope.albums[albumIndex - 1];
+                    if (previousAlbum.images.length == 0) {
+                        $scope.showPrev(albumIndex - 1);
                     }
-                    $scope.imageTag = previousVisit.tag;
-                    $scope.imageIndex = previousVisit.images.length - 1;
+                    $scope.albumTag = previousAlbum.tag;
+                    $scope.imageIndex = previousAlbum.images.length - 1;
                 }
             };
 
             $scope.showNext = function () {
-                var visitIndex = getVisitIndex();
-                if ($scope.imageIndex < $scope.visits[visitIndex].images.length - 1) {
+                var albumIndex = getAlbumIndex();
+                if ($scope.imageIndex < $scope.albums[albumIndex].images.length - 1) {
                     ++$scope.imageIndex;
                 } else {
-                    if (visitIndex == $scope.visits.length - 1) {
-                        visitIndex = -1;
+                    if (albumIndex == $scope.albums.length - 1) {
+                        albumIndex = -1;
                     }
-                    var nextVisit = $scope.visits[visitIndex + 1];
-                    if (nextVisit.images.length == 0) {
-                        $scope.showNext(visitIndex + 1);
+                    var nextAlbum = $scope.albums[albumIndex + 1];
+                    if (nextAlbum.images.length == 0) {
+                        $scope.showNext(albumIndex + 1);
                     }
-                    $scope.imageTag = nextVisit.tag;
+                    $scope.albumTag = nextAlbum.tag;
                     $scope.imageIndex = 0;
                 }
             };
 
             $scope.getTotalLength = function () {
                 var totalLength = 0;
-                angular.forEach($scope.visits, function (visit) {
-                    totalLength += visit.images.length;
+                angular.forEach($scope.albums, function (album) {
+                    totalLength += album.images.length;
                 });
                 return totalLength;
             };
 
             $scope.getCurrentIndex = function () {
                 var currentIndex = 1;
-                for (var i = 0; i < getVisitIndex(); i++) {
-                    currentIndex += $scope.visits[i].images.length;
+                for (var i = 0; i < getAlbumIndex(); i++) {
+                    currentIndex += $scope.albums[i].images.length;
                 }
                 return currentIndex + parseInt($scope.imageIndex);
             };

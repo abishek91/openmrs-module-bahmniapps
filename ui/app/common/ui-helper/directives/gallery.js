@@ -2,7 +2,7 @@ angular.module('bahmni.common.uiHelper')
     .directive('bmGallery', ['$location', '$rootScope', '$compile', function ($location, $rootScope, $compile) {
 
         var controller = function ($scope) {
-            $scope.visits = [];
+            $scope.albums = [];
             $scope.imagePosition = {
                 tag: undefined,
                 index: 0
@@ -22,29 +22,29 @@ angular.module('bahmni.common.uiHelper')
             };
 
             this.addImage = function (image, tag, prepend) {
-                var matchingVisit = getMatchingVisit(tag);
-                if (!matchingVisit) {
-                    var newVisit = {};
-                    newVisit.tag = tag;
-                    newVisit.images = [image];
-                    $scope.visits.push(newVisit);
+                var matchedAlbum = getMatchingAlbum(tag);
+                if (!matchedAlbum) {
+                    var newAlbum = {};
+                    newAlbum.tag = tag;
+                    newAlbum.images = [image];
+                    $scope.albums.push(newAlbum);
                 }else{
-                    prepend ? matchingVisit.images.unshift(image) : matchingVisit.images.push(image);
+                    prepend ? matchedAlbum.images.unshift(image) : matchedAlbum.images.push(image);
                 }
-                return $scope.visits[0].images.length - 1;
+                return $scope.albums[0].images.length - 1;
             };
 
-            var getMatchingVisit = function(tag) {
-                return _.find($scope.visits, function (visit) {
-                    return visit.tag == tag;
+            var getMatchingAlbum = function(tag) {
+                return _.find($scope.albums, function (album) {
+                    return album.tag == tag;
                 });
             };
 
             this.removeImage = function (image, tag, index) {
-                var matchingVisit = getMatchingVisit(tag);
+                var matchedAlbum = getMatchingAlbum(tag);
 
-                if(matchingVisit)  {
-                    matchingVisit.images && matchingVisit.images.splice(index, 1);
+                if(matchedAlbum)  {
+                    matchedAlbum.images && matchedAlbum.images.splice(index, 1);
                 }
             };
 

@@ -1,5 +1,5 @@
 angular.module('bahmni.common.uiHelper')
-    .directive('bmGallery', ['$location', '$rootScope', '$compile', '$document', function ($location, $rootScope, $compile, $document) {
+    .directive('bmGallery', ['$location', '$rootScope', '$compile', function ($location, $rootScope, $compile) {
 
         var controller = function ($scope) {
             $scope.visits = [];
@@ -18,24 +18,36 @@ angular.module('bahmni.common.uiHelper')
             };
 
             this.addImageObservation = function (record, tag) {
-                return this.addImage(this.image(record, tag));
+                return this.addImage(this.image(record), tag);
             };
 
-            this.addImage = function (image, tag) {
+            this.addImage = function (image, tag, prepend) {
                 var visit = _.find($scope.visits, function (visit) {
-                    if(visit.tag === tag){
-                        visit.images.push(image);
+                    if (visit.tag === tag) {
+                        if (prepend) {
+                            visit.images.unshift(image);
+                        } else {
+                            visit.images.push(image);
+                        }
                         return true;
                     }
                 });
-                if(!visit){
+                if (!visit) {
                     var newVisit = {
                         tag: tag,
                         images: [image]
                     };
                     $scope.visits.push(newVisit);
                 }
-                return $scope.visits[tag].images.length - 1;
+                return $scope.visits[0].images.length - 1;
+            };
+
+            this.removeImage = function (image, tag, index) {
+                _.find($scope.visits, function (visit) {
+                    if (visit.tag == tag) {
+                        visit.images.splice(index, 1);
+                    }
+                });
             };
 
             this.setIndex = function (tag, index) {
@@ -63,13 +75,16 @@ angular.module('bahmni.common.uiHelper')
                 date: $scope.image.obsDatetime,
                 uuid: $scope.image.obsUuid
             };
-            var tag = image.visitUuid;
-            imageGalleryController.addImage(image, tag);
+            imageGalleryController.addImage(image, $scope.visitUuid, $scope.prepend);
 
             element.click(function (e) {
                 e.stopPropagation();
-                imageGalleryController.setIndex(tag, $scope.index);
+                imageGalleryController.setIndex($scope.visitUuid, $scope.index);
                 imageGalleryController.open();
+            });
+
+            element.on('$destroy', function () {
+                imageGalleryController.removeImage(image, $scope.visitUuid, $scope.index);
             });
         };
         return {
@@ -77,7 +92,8 @@ angular.module('bahmni.common.uiHelper')
             scope: {
                 image: '=',
                 prepend: "=?",
-                index: "@"
+                index: "@",
+                visitUuid: "="
             },
             require: '^bmGallery'
         };

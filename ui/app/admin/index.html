@@ -8,16 +8,16 @@
     <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
     <link rel="stylesheet" href="../styles/clinical.css"/>
 
-    <!-- build:css home.min.css -->
+    <!-- build:css admin.min.css -->
     <link rel="stylesheet" href="../styles/home.css"/>
     <!-- endbuild -->
 </head>
 <body>
 <div class="reg-wrapper">
-    <div ng-app="bahmni.admin">
+    <div id="debug" ng-app="admin">
         <p class="caution" ng-cloak ng-show="server_error"><i class="icon-exclamation-sign small"></i>{{server_error}}</p>
         <div ng-include src="'../common/ui-helper/header.html'"></div>
-        <div ng-view id="view-content"></div>
+        <div ui-view id="view-content"></div>
         <div id="overlay"></div>
     </div>
 </div>
@@ -25,11 +25,12 @@
 <script src="../components/jquery/jquery.js"></script>
 <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
 <script src="../components/jquery.cookie/jquery.cookie.js"></script>
+
 <script src="../components/angular/angular.js"></script>
-<script src="../components/angular-route/angular-route.js"></script>
 <script src="../components/angular-cookies/angular-cookies.js"></script>
 <script src="../components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
 <script src="../components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="../components/angular-file-upload/angular-file-upload.min.js"></script>
 <!-- build:js home.min.js -->
 <script src="../common/constants.js"></script>
 
@@ -40,8 +41,9 @@
 <script src="../common/auth/authentication.js"></script>
 
 <script src="../common/app-framework/init.js"></script>
-<script src="../common/app-framework/models/appDescriptor.js"></script>
 <script src="../common/app-framework/services/appService.js"></script>
+<script src="../common/app-framework/directives/appExtensionList.js"></script>
+<script src="../common/app-framework/models/appDescriptor.js"></script>
 
 <script src="../common/ui-helper/init.js"></script>
 <script src="../common/ui-helper/spinner.js"></script>
@@ -51,6 +53,7 @@
 <script src="../common/ui-helper/controllers/dashboardController.js"></script>
 
 <script src="app.js"></script>
+<script src="init.js"></script>
 <script src="controllers/csvUploadController.js"></script>
 
 <!-- endbuild -->

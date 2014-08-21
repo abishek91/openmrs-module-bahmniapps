@@ -39,9 +39,7 @@ angular.module('bahmni.home', ['ngRoute', 'httpErrorInterceptor', 'bahmni.common
         templateUrl: '../common/ui-helper/views/dashboard.html',
         controller: 'DashboardController',
         resolve: {
-            appName: function () {
-                return 'home'
-            }
+            initialize: 'init'
         }
     });
     $routeProvider.otherwise({redirectTo: '/dashboard'});

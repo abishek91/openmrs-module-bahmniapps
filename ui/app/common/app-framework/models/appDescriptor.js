@@ -96,6 +96,19 @@ Bahmni.Common.AppFramework.AppDescriptor = function (context, inheritContext, re
         }
     };
 
+    this.getExtension = function (id){
+        var currentUser = retrieveUserCallback();
+        if (currentUser && that.extensions) {
+            var userPrivileges = currentUser.privileges.map(function (priv) {
+                return priv.retired ? "" : priv.name;
+            });
+            var appsExtns = that.extensions.filter(function (extn) {
+                return (extn.id === id) && (!extn.requiredPrivilege || (userPrivileges.indexOf(extn.requiredPrivilege) >= 0));
+            });
+            return appsExtns.length == 0 ? appsExtns : appsExtns[0];
+        }
+    };
+
     this.getConfig = function(configName) {
         var cfgList = that.configs.filter(function(cfg) {
             return cfg.name == configName;

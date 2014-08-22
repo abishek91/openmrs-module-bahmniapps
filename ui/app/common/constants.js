@@ -34,6 +34,7 @@ Bahmni.Common = Bahmni.Common || {};
         idgenConfigurationURL: RESTWS_V1 + "/idgen/identifiersources",
         bahmniRESTBaseURL: BAHMNI_CORE + "",
         observationsUrl: BAHMNI_CORE + "/observations",
+        encounterImportUrl: BAHMNI_CORE + "/admin/upload/encounter",
         allTestsAndPanelsConceptName : 'All_Tests_and_Panels',
         dosageFrequencyConceptName : 'Dosage Frequency',
         dosageInstructionConceptName : 'Dosage Instructions',

@@ -8,10 +8,6 @@
 
                 <h3>Select file</h3>
                 <input type="file" nv-file-select="" uploader="uploader"/>
-                <select ng-show="algorithmFileNames" class="form-field freq-dose-units" ng-model="uploader.formData[0].patientMatchingAlgorithm"
-                        ng-options="algorithmFileName for algorithmFileName in algorithmFileNames">
-                    <option/>
-                </select>
             </div>
 
             <div class="col-md-9" style="margin-bottom: 40px">

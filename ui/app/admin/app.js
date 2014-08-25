@@ -1,14 +1,12 @@
 'use strict';
 
-angular.module('admin', ['admin', 'httpErrorInterceptor', 'bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.appFramework', 'ngCookies', 'ui.router', 'angularFileUpload']);
-
-angular.module('admin').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
+angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin']).config(['$stateProvider', '$httpProvider', '$urlRouterProvider', function ($stateProvider, $httpProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/dashboard');
     $stateProvider.state('admin', {
         abstract: true,
         template: '<ui-view/>',
         resolve: {
-            initialize: 'init'
+            initialize: 'initialization'
         }
     }).state('admin.dashboard',
         {   url: '/dashboard',

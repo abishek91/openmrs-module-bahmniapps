@@ -1,11 +1,3 @@
 'use strict';
 
-angular.module('admin').factory('init', ['$rootScope', '$q', 'appService', 'spinner',
-    function ($rootScope, $q, appService, spinner) {
-        var initApp = function () {
-            return appService.initApp('admin');
-        };
-
-        return spinner.forPromise(initApp());
-    }
-]);
+angular.module('bahmni.admin', ['bahmni.common.uiHelper', 'bahmni.common.util', 'bahmni.common.appFramework', 'ngCookies', 'ui.router', 'angularFileUpload']);

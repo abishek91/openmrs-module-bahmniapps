@@ -10,17 +10,26 @@ angular.module('bahmni.clinical')
                 {name: "Hours", factor: 1/24},
                 {name: "Days", factor: 1},
                 {name: "Weeks", factor: 7},
-                {name: "Months", factor: 30},
+                {name: "Months", factor: 30}
             ];
 
             var newTreatment = function () {
                 return new Bahmni.Clinical.DrugOrderViewModel($scope.currentBoard.extensionParams,
                     $scope.treatmentConfig.routes, $scope.treatmentConfig.durationUnits);
-            }
+            };
 
             $scope.treatment = newTreatment();
             $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
 
+            var isDosingEmpty = function(dosingType) {
+                return _.every(dosingType, function (element) {
+                    return element == null;
+                });
+            };
+
+            $scope.areDosingInstructionsPresent = function() {
+                return isDosingEmpty($scope.treatment.variableDosingType) && isDosingEmpty($scope.treatment.uniformDosingType);
+            };
 
             var watchFunctionForQuantity = function() {
                 var treatment = $scope.treatment;
@@ -28,9 +37,9 @@ angular.module('bahmni.clinical')
                     uniformDosingType: treatment.uniformDosingType,
                     variableDosingType: treatment.variableDosingType,
                     duration: treatment.duration,
-                    durationUnit: treatment.durationUnit,
+                    durationUnit: treatment.durationUnit
                 }
-            }
+            };
 
             $scope.$watch(watchFunctionForQuantity, function() {
                 $scope.treatment.calculateQuantity();
@@ -41,6 +50,7 @@ angular.module('bahmni.clinical')
                     $scope.formInvalid = true;
                     return;
                 }
+                $scope.treatment.dosingInstructionType = $scope.areDosingInstructionsPresent() ? Bahmni.Clinical.Constants.noDosingInstructionsClass : null;
                 $scope.treatments.push($scope.treatment);
                 $scope.treatment = newTreatment();
                 $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');
@@ -65,11 +75,11 @@ angular.module('bahmni.clinical')
 
             $scope.toggleShowNotes = function (line) {
                 line.showNotes = !line.showNotes;
-            }
+            };
 
             $scope.toggleAsNeeded = function(treatment) {
                 treatment.asNeeded = !treatment.asNeeded;
-            }
+            };
 
             $scope.edit = function (index) {
                 $scope.treatment = $scope.treatments[index];
@@ -107,6 +117,5 @@ angular.module('bahmni.clinical')
                     $rootScope.consultation.drugOrders.push(Bahmni.Clinical.DrugOrder.createFromUIObject(treatment));
                 });
             };
-//            TODO: Uncomment below line to save the data.
-//            registerTabService.register(saveTreatment);
+            registerTabService.register(saveTreatment);
         }]);

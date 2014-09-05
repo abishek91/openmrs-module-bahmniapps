@@ -67,7 +67,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, routes, duration
                 this.durationUnit = _.find(durationUnits, {name: "Weeks"});
             }
         }
-    }
+    };
 
     this.setFrequencyType = function (type) {
         self.frequencyType = type;

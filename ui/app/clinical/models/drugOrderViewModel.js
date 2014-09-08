@@ -78,6 +78,25 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, routes, duration
             self.uniformDosingType = {};
     };
 
+    this.isCurrentDosingTypeEmpty = function() {
+        var dosingType = this.isUniformDosingType() ? this.uniformDosingType: this.variableDosingType;
+        return _.every(dosingType, function (element) {
+            return element == null;
+        });
+    };
+
+    this.isVariableDosingType = function() {
+        return this.isFrequencyType("variable");
+    };
+
+    this.isUniformDosingType = function() {
+        return this.isFrequencyType("uniform");
+    };
+
+    this.isFrequencyType = function(type) {
+        return this.frequencyType === type;
+    };
+
     this.setQuantityEnteredManually = function() {
         this.quantityEnteredManually = true;
     };

@@ -14,9 +14,8 @@ angular.module('bahmni.clinical')
             ];
 
             var newTreatment = function () {
-                return new Bahmni.Clinical.DrugOrderViewModel($scope.currentBoard.extensionParams,
-                    $scope.treatmentConfig.routes, $scope.treatmentConfig.durationUnits);
-            };
+                return new Bahmni.Clinical.DrugOrderViewModel($scope.currentBoard.extensionParams, $scope.treatmentConfig);
+            }
 
             $scope.treatment = newTreatment();
             $scope.treatment.scheduledDate = $filter("date")($scope.treatment.scheduledDate, 'yyyy-MM-dd');

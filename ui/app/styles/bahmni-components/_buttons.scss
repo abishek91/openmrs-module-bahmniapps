@@ -17,7 +17,7 @@ use either a `<button>` or an `<a>` element:
 button:focus, a:focus, .btn:focus {outline:0;}
 
 /*backButton:*/
-.back-btn {
+a.back-btn, button.back-btn{
   position: relative;
   display: inline-block;
   text-decoration: none;
@@ -25,7 +25,6 @@ button:focus, a:focus, .btn:focus {outline:0;}
   margin: 6px 5px 0 25px;
   color: #fff;  
   border-left: 0;
-  box-shadow: 0 0 5px #888;
   float: left;
   @include border-radius(3px);
   &:hover {
@@ -57,7 +56,7 @@ button:focus, a:focus, .btn:focus {outline:0;}
 }
 
 ul li a.back-btn, ul li a.back-btn:hover, button.back-btn{
-  padding: 10px 10px 9px 5px;
+  padding: 10px 10px 10px 5px;
   border:1px solid #4d8282;
   @include background(linear-gradient(top, $bahmniSecondaryColor, #528484));
 }

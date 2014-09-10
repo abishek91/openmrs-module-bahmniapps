@@ -13,6 +13,9 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
                     'content': {
                         templateUrl: '../common/patient-search/views/patientsList.html',
                         controller: 'PatientsListController'
+                    },
+                    'additional-header': { 
+                        templateUrl: '../common/ui-helper/header.html' 
                     }
                 },
                 resolve: {
@@ -22,7 +25,7 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
             .state('upload', {
                 url: '/patient/:patientUuid/document',
                 data: {
-                    backLinks: [{label: "Patient Q", url: "#/search"}]
+                    backLinks: [{label: "Patients", url: "#/search"}]
                 },
                 views: {
                     'content': {
@@ -30,7 +33,7 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
                         controller: 'DocumentController'
                     },
                     'additional-header': { 
-                        templateUrl: '../common/patient/header/views/header.html' 
+                        templateUrl: 'views/patientHeader.html' 
                     }
                 },
                 resolve: {

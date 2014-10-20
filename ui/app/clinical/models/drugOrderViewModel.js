@@ -186,16 +186,23 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config) {
         this.durationInDays = this.duration * (this.durationUnit && this.durationUnit.factor || 1);
     };
 
+    var getQuantityUnit = function(doseUnits){
+        var unit = _.find(config.dispensingUnits, function(unit){
+            return doseUnits === unit.name;
+        });
+        return unit ? unit.name : null;
+    }
+
     this.calculateQuantityAndUnit = function () {
         this.calculateDurationInDays();
         if (!this.quantityEnteredManually && !this.quantityEnteredViaEdit) {
             if (this.frequencyType == Bahmni.Clinical.Constants.dosingTypes.uniform) {
                 this.quantity = this.uniformDosingType.dose * (this.uniformDosingType.frequency ? this.uniformDosingType.frequency.frequencyPerDay : 0) * this.durationInDays;
-                this.quantityUnit = this.uniformDosingType.doseUnits;
+                this.quantityUnit = getQuantityUnit(this.uniformDosingType.doseUnits);
             } else if (this.frequencyType == Bahmni.Clinical.Constants.dosingTypes.variable) {
                 var dose = this.variableDosingType;
                 this.quantity = (dose.morningDose + dose.afternoonDose + dose.eveningDose) * this.durationInDays;
-                this.quantityUnit = this.variableDosingType.doseUnits;
+                this.quantityUnit = getQuantityUnit(this.variableDosingType.doseUnits);
             }
         }
         if(this.quantity % 1 != 0){

@@ -35,7 +35,7 @@ Bahmni.Common = Bahmni.Common || {};
         labResultUploadedFileNameUrl: "/uploaded_results/",
         visitSummaryUrl: BAHMNI_CORE + "/visitsummary",
         openmrsUrl: "/openmrs",
-        idgenConfigurationURL: RESTWS_V1 + "/idgen/identifiersources",
+        identifierSourceURL: RESTWS_V1 + "/identifiersource",
         bahmniRESTBaseURL: BAHMNI_CORE + "",
         observationsUrl: BAHMNI_CORE + "/observations",
         obsRelationshipUrl: BAHMNI_CORE + "/obsrelationships",

@@ -23,8 +23,8 @@ angular.module('bahmni.registration')
         };
 
         var generateIdentifier = function (patient) {
-            var idgenJson = {"identifierSourceName": patient.identifierPrefix.prefix};
-            return $http.post(openmrsUrl + "/ws/rest/v1/idgen", idgenJson);
+            var idgenJson = {"source": patient.identifierPrefix.uuid };
+            return $http.post(baseOpenMRSRESTURL+ "/identifier", idgenJson);
         };
 
         var create = function (patient) {

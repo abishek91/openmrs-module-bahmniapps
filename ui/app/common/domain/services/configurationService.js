@@ -105,7 +105,7 @@ angular.module('bahmni.common.domain')
         };
 
         configurationFunctions.identifierSourceConfig = function () {
-           return $http.get(Bahmni.Common.Constants.idgenConfigurationURL, {
+           return $http.get(Bahmni.Common.Constants.identifierSourceURL, {
                 withCredentials: true
             });
         };

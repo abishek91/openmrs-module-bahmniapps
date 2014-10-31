@@ -23,10 +23,10 @@ angular.module('bahmni.registration')
                 }
                 $scope.identifierSources.forEach(function (identifierSource) {
                     if (identifierPrefix === identifierSource.prefix) {
-                        $scope.identifierPrefix = identifierSource;
+                        $scope.identifierSource = identifierSource;
                     }
                 });
-                $scope.identifierPrefix = $scope.identifierPrefix || $scope.identifierSources[0];
+                $scope.identifierSource = $scope.identifierSource || $scope.identifierSources[0];
 
                 $scope.registrationNumber = $location.search().registrationNumber || "";
                 if (hasSearchParameters()) {
@@ -111,9 +111,9 @@ angular.module('bahmni.registration')
             $scope.searchById = function () {
                 if (!$scope.registrationNumber) return;
                 $scope.results = [];
-                var patientIdentifier = $scope.identifierPrefix.prefix + $scope.registrationNumber;
-                preferences.identifierPrefix = $scope.identifierPrefix.prefix;
-                $location.search({identifierPrefix: $scope.identifierPrefix.prefix, registrationNumber: $scope.registrationNumber});
+                var patientIdentifier = $scope.identifierSource.prefix + $scope.registrationNumber;
+                preferences.identifierPrefix = $scope.identifierSource.prefix;
+                $location.search({identifierPrefix: $scope.identifierSource.prefix, registrationNumber: $scope.registrationNumber});
                 var searchPromise = patientService.search(patientIdentifier).success(function (data) {
                     mapLocalName(data);
                     if (data.pageOfResults.length === 1) {

@@ -109,7 +109,8 @@ angular.module('bahmni.registration')
             setPreferences();
             if (!$scope.patient.identifier) {
                 spinner.forPromise(patientService.generateIdentifier($scope.patient).then(function (response) {
-                    $scope.patient.identifier = response.data;
+                    var identifierObject = response.data;
+                    $scope.patient.identifier = identifierObject.value;
                     return patientService.create($scope.patient).success(successCallback).success(followUpAction);
                 }));
             } else {

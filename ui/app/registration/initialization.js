@@ -12,7 +12,7 @@ angular.module('bahmni.registration').factory('initialization',
                 $rootScope.regEncounterConfiguration = angular.extend(new Bahmni.Registration.RegistrationEncounterConfig(), configurations.encounterConfig);
                 $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig);
                 $rootScope.patientConfiguration = angular.extend(patientConfig, patientAttributeTypes);
-                $rootScope.patientConfiguration = angular.extend(patientConfig, {identifierSources: configurations.identifierSourceConfig});            
+                $rootScope.patientConfiguration = angular.extend(patientConfig, {identifierSources: configurations.identifierSourceConfig.results});
                 $rootScope.addressLevels = configurations.addressLevels;
             });
         };

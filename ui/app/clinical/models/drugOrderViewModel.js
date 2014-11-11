@@ -236,6 +236,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (extensionParams, config, proto) {
         return !!self.dateStopped;
     };
 
+    this.isScheduled = function(){
+        return self.scheduledDate > Bahmni.Common.Util.DateUtil.today();
+    };
+
     this.isActive = function(){
         return !self.isDiscontinuedOrStopped() && (self.effectiveStopDate == null || self.effectiveStopDate >= Bahmni.Common.Util.DateUtil.today());
     };

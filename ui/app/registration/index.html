@@ -12,7 +12,9 @@
     <body>
         <div class="reg-wrapper">
             <div ng-app="registration">
-                <div ui-view="layout" id="view-content"></div>
+                <div ng-include src="'views/header.html'"></div>
+                <div ng-include src="'../common/ui-helper/messages.html'"></div>
+                <div ui-view="content" id="view-content" class="pg-container"></div>        
             </div>
         </div>
         <script src="../components/lodash/dist/lodash.min.js"></script>
@@ -105,7 +107,6 @@
         
         
         <script src="directives/addressFields.js"></script>
-        <script src="directives/printOptions.js"></script>
         <script src="controllers/navigationController.js"></script>
         <script src="controllers/searchController.js"></script>
         <script src="controllers/patientCommonController.js"></script>

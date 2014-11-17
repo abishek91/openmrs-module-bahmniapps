@@ -4,7 +4,9 @@ angular.module('bahmni.registration')
     .controller('NavigationController', ['$scope', '$rootScope', '$location', 'sessionService', '$window', 'appService', '$sce',
         function ($scope, $rootScope, $location, sessionService, $window, appService, $sce) {
 
-        $scope.extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.navigation", "link");
+        $rootScope.$on('event:appExtensions-loaded', function () {
+            $scope.extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.navigation", "link");
+        });
 
         $scope.goTo = function(url) {
             $location.url(url);

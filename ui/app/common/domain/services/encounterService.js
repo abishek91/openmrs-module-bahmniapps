@@ -45,7 +45,7 @@ angular.module('bahmni.common.domain')
         		visitUuid : visitUuid,
                 encounterDate : encounterDate,
                 includeAll : Bahmni.Common.Constants.includeAllObservations
-        	},        	
+        	},
           withCredentials : true
         });
     };

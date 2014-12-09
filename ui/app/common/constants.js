@@ -34,6 +34,7 @@ Bahmni.Common = Bahmni.Common || {};
         patientImageUrl: "/patient_images/",
         labResultUploadedFileNameUrl: "/uploaded_results/",
         visitSummaryUrl: BAHMNI_CORE + "/visitsummary",
+        obsCalculatorUrl: BAHMNI_CORE + "/bahmniobscalculator",
         openmrsUrl: "/openmrs",
         idgenConfigurationURL: RESTWS_V1 + "/idgen/identifiersources",
         bahmniRESTBaseURL: BAHMNI_CORE + "",

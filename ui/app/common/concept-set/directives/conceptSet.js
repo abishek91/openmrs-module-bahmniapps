@@ -39,15 +39,6 @@ angular.module('bahmni.common.conceptSet')
                     id: _.property('uuid')
                 };
             };
-            $scope.computeField = function(observation){
-                var observations = $scope.rootObservation.groupMembers;
-                observations = observations.filter(function(observation){
-                    return !observation.isComputedAndEditable();
-                });
-                spinner.forPromise(conceptSetService.getComputedValue(observations, observation.concept.name)).then(function (response) {
-                    observation.value = response;
-                });
-            };
         };
 
         return {

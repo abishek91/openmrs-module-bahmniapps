@@ -113,10 +113,7 @@
                           ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"></textarea>
                 <input type="text" id="{{observation.uniqueId}}" ng-switch-when="text" ng-model="observation.value" ng-if="observation.isConciseText()"
                        ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}">
-                <div ng-switch-when="text" ng-if="observation.isComputedAndEditable()">
-                    <button type="button" ng-click="computeField(observation)">Compute</button>
-                    <textarea id="{{observation.uniqueId}}" ng-model="observation.value" ng-class="{'disabled': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"></textarea>
-                </div>
+                <textarea id="{{observation.uniqueId}}" disabled ng-switch-when="text" ng-if="observation.isComputedAndEditable()" ng-model="observation.value" ng-class="{'disabled': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired)}"></textarea>
                 <!--{{observation.groupMembers}}-->
                 <div ng-switch-when="grid">
                     <div  ng-repeat="member in observation.groupMembers" class="grid-row">

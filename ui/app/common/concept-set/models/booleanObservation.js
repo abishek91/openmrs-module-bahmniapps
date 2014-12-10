@@ -25,6 +25,10 @@ Bahmni.ConceptSet.BooleanObservation = function(observation) {
         }
     };
 
+    this.isComputedAndEditable = function(){
+        return this.concept.conceptClass === "Computed/Editable";
+    };
+
     this.isFormElement = function(){
         return true;
     };

@@ -30,6 +30,16 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, observations, concep
         }
     };
 
+    var atLeastOneObservationIsComputedAndEditable = function(observation){
+        if (observation.groupMembers && observation.groupMembers.length > 0) {
+            return observation.groupMembers.some(function (groupMember) {
+                return atLeastOneObservationIsComputedAndEditable(groupMember);
+            })
+        } else {
+            return observation.isComputedAndEditable();
+        }
+    };
+
     self.isAvailable = function (context) {
         return getShowIfFunction()(context || {});
     };
@@ -52,6 +62,13 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, observations, concep
         var observations = self.getObservationsForConceptSection();
         return _.some(observations, function (observation) {
             return atLeastOneValueSet(observation);
+        })
+    };
+
+    self.showComputeButton = function (){
+        var observations = self.getObservationsForConceptSection();
+        return _.some(observations, function (observation) {
+            return atLeastOneObservationIsComputedAndEditable(observation);
         })
     };
 

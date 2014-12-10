@@ -11,10 +11,10 @@ angular.module('bahmni.common.conceptSet')
             	});
         };
 
-        var getComputedValue = function(observations, conceptNameForWhichToCalculate){
+        var getComputedValue = function(observations){
             var url = Bahmni.Common.Constants.obsCalculatorUrl;
             var deferred = $q.defer();
-            var data = {observation: observations, conceptName: conceptNameForWhichToCalculate};
+            var data = observations;
             $http.post(url, data, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}

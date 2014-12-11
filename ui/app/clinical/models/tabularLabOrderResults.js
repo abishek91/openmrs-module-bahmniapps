@@ -1,7 +1,6 @@
 'use strict';
 
 Bahmni.Clinical.TabularLabOrderResults = (function () {
-    var DateUtil = Bahmni.Common.Util.DateUtil;
     var TabularLabOrderResults = function (tabularResult) {
         this.tabularResult = tabularResult;
         this.getDateLabels = function () {

@@ -1,5 +1,6 @@
 angular.module('bahmni.common.conceptSet')
-.controller('ConceptSetGroupController', ['$scope', 'appService', 'contextChangeHandler', 'spinner', 'conceptSetService', function ($scope, appService, contextChangeHandler, spinner, conceptSetService) {
+.controller('ConceptSetGroupController', ['$scope', 'appService', 'contextChangeHandler', 'spinner', 'conceptSetService', '$rootScope', 'sessionService', '$state', 'messagingService', 'encounterService', 'treatmentConfig',
+        function ($scope, appService, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService, $state, messagingService, encounterService, treatmentConfig) {
 
     $scope.validationHandler = new Bahmni.ConceptSet.ConceptSetGroupValidationHandler($scope.conceptSets);
 
@@ -7,11 +8,38 @@ angular.module('bahmni.common.conceptSet')
         return conceptName.replace(/['\.\s\(\)\/,\\]+/g,"_");
     };
 
+    var clearRootScope = function(){
+        $rootScope.consultation.newlyAddedDiagnoses = [];
+        $rootScope.consultation.newlyAddedTreatments = [];
+        $rootScope.consultation.discontinuedDrugs = [];
+        $rootScope.consultation.drugOrderGroups = undefined;
+    };
+
     $scope.computeField = function(conceptSet){
-        var observationsForConceptSection = conceptSet.getObservationsForConceptSection();
-        spinner.forPromise(conceptSetService.getComputedValue(observationsForConceptSection[0])).then(function (response) {
-            console.log(response)
+        event.stopPropagation();
+
+        var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
+        $rootScope.consultation.observations = observationFilter.filter($rootScope.consultation.observations);
+        $rootScope.consultation.consultationNote = observationFilter.filter([$rootScope.consultation.consultationNote])[0];
+        $rootScope.consultation.labOrderNote = observationFilter.filter([$rootScope.consultation.labOrderNote])[0];
+
+        var encounterData =new Bahmni.Clinical.EncounterTransactionMapper().map($rootScope.consultation, $rootScope.patient, sessionService.getLoginLocationUuid());
+        encounterData = encounterService.buildEncounter(encounterData);
+        console.log(encounterData);
+
+        var conceptSetData = {name: conceptSet.conceptName, uuid: conceptSet.uuid};
+        var data = {bahmniEncounterTransaction: encounterData, conceptSetData: conceptSetData};
+
+        spinner.forPromise(conceptSetService.getComputedValue(data)).then(function (response) {
+            $rootScope.consultation.observations = response.observations;
+
+            var drugOrderAppConfig = appService.getAppDescriptor().getConfigValue("drugOrder") || {};
+            $rootScope.consultation.newlyAddedTreatments = [];
+            response.drugOrders.forEach(function(drugOrder){
+                $rootScope.consultation.newlyAddedTreatments.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, treatmentConfig))
+            });
         });
+        messagingService.showMessage('info', 'Computed');
     };
     contextChangeHandler.add($scope.validationHandler.validate);
 }])
@@ -30,10 +58,10 @@ angular.module('bahmni.common.conceptSet')
                     '<div ng-click="conceptSet.toggleDisplay()" class="concept-set-title" >' +
                         '<h2 class="section-title">' +
                             '<i class="icon-caret-right" ng-hide="conceptSet.isOpen"></i>' +
-                            '<i class="icon-caret-down" ng-show="conceptSet.isOpen"></i>' + 
+                            '<i class="icon-caret-down" ng-show="conceptSet.isOpen"></i>' +
                             '<strong>{{conceptSet.label}}</strong>' +
+                            '<button type="button" ng-if="conceptSet.showComputeButton()" ng-click="computeField(conceptSet)" class="fr btn-small">Compute</button>' +
                         '</h2>' +
-                        '<button type="button" ng-if="conceptSet.showComputeButton()" ng-click="computeField(conceptSet)">Compute</button>' +
                     '</div>' +
                     '<concept-set ng-if="conceptSet.isLoaded" ng-show="conceptSet.isOpen" concept-set-name="conceptSet.conceptName" required="conceptSet.options.required" observations="observations" show-title="false" validation-handler="validationHandler"></concept-set>' +
                   '</div>'

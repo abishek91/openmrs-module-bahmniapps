@@ -39,10 +39,6 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.concept.conceptClass === "Computed";
     },
 
-    isComputedAndEditable: function() {
-        return this.concept.conceptClass === "Computed/Editable";
-    },
-
     isNumeric: function () {
         return this.getDataTypeName() === "Numeric";
     },

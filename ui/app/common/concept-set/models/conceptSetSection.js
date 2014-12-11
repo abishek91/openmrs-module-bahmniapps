@@ -9,7 +9,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, observations, concep
         conceptName = conceptName ? conceptName.name : conceptName;
         self.label = conceptName || conceptSet.name || self.options.conceptName;
         self.isLoaded = self.isOpen;
-
+        self.uuid = conceptSet.uuid;
     };
 
     var getShowIfFunction = function () {
@@ -36,7 +36,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, observations, concep
                 return atLeastOneObservationIsComputedAndEditable(groupMember);
             })
         } else {
-            return observation.isComputedAndEditable();
+            return observation.concept.conceptClass === "Computed/Editable";
         }
     };
 

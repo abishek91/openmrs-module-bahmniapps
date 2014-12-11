@@ -12,7 +12,7 @@ angular.module('bahmni.common.conceptSet')
         };
 
         var getComputedValue = function(observations){
-            var url = Bahmni.Common.Constants.obsCalculatorUrl;
+            var url = Bahmni.Common.Constants.encounterModifierUrl;
             var deferred = $q.defer();
             var data = observations;
             $http.post(url, data, {

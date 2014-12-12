@@ -8,14 +8,8 @@
 
         <div ng-if="hasLabOrders()">
             <table ng-repeat="labOrderResults in labAccessions" bindonce="labAccessions">
-                <tbody ng-repeat="labOrderResult in labOrderResults" ng-show="showNormalLabResults || hasAbnormalTests(labOrderResult)">
-                    <tr ng-if="labOrderResult.isPanel " class="header">
-                        <td colspan="2"><strong>{{labOrderResult.orderName}}</strong></td>
-                    </tr>
-                    <tr lab-order-line test="test" ng-if="labOrderResult.isPanel" ng-show="showNormalLabResults || test.abnormal" ng-repeat="test in labOrderResult.tests">
-                    </tr>
-
-                    <tr lab-order-line test="labOrderResult" ng-if="!labOrderResult.isPanel" ></tr>
+                <tbody lab-order-line test="labOrderResult" ng-repeat="labOrderResult in labOrderResults"
+                       ng-show="showNormalLabResults || hasAbnormalTests(labOrderResult)">
                 </tbody>
             </table>
         </div>

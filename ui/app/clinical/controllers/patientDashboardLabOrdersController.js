@@ -9,13 +9,21 @@ angular.module('bahmni.clinical')
             var init = function () {
                 spinner.forPromise(labOrderResultService.getAllForPatient($scope.patientUuid, 1).then(function (results) {
                     var sortedConceptSet = new Bahmni.Clinical.SortedConceptSet($rootScope.allTestsAndPanelsConcept);
-                    $scope.labAccessions = results.accessions.map(sortedConceptSet.sortTestResults);
+                    $scope.labAccessions = flattened(results.accessions.map(sortedConceptSet.sortTestResults));
                 }));
                 var labResultSection = clinicalConfigService.getPatientDashBoardSectionByName("labOrders");
                 $scope.showNormalLabResults = labResultSection.showNormalValues !== undefined ? labResultSection.showNormalValues : true;
             };
 
             init();
+
+            var flattened = function (accessions) {
+                return accessions.map(function (results) {
+                    return _.flatten(results, function (result) {
+                        return result.isPanel == true ? [result, result.tests] : result;
+                    });
+                });
+            };
 
             $scope.getUploadedFileUrl = function (uploadedFileName) {
                 return Bahmni.Common.Constants.labResultUploadedFileNameUrl + uploadedFileName;

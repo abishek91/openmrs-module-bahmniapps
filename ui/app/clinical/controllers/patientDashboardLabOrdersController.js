@@ -2,9 +2,12 @@ angular.module('bahmni.clinical')
     .controller('PatientDashboardLabOrdersController', ['$scope', '$rootScope', '$stateParams', 'LabOrderResultService', '$q', 'spinner', 'clinicalConfigService',
         function ($scope, $rootScope, $stateParams, labOrderResultService, $q, spinner, clinicalConfigService) {
             $scope.patientUuid = $stateParams.patientUuid;
-            $scope.patientSummary = {message: "No Lab Orders for this patient."};
             $scope.showNormalLabResults = true;
 
+            $scope.labOrderControlParameters = {
+                patientUuid: $scope.patientUuid,
+                numberOfVisits: 1
+            };
 
             var init = function () {
                 spinner.forPromise(labOrderResultService.getAllForPatient($scope.patientUuid, 1).then(function (results) {
@@ -32,17 +35,4 @@ angular.module('bahmni.clinical')
             $scope.hasLabOrders = function () {
                 return $scope.labAccessions && $scope.labAccessions.length > 0;
             };
-            $scope.hasAbnormalTests = function (labOrderResult) {
-                if (labOrderResult.isPanel) {
-                    var hasAbnormal = false;
-                    labOrderResult.tests.forEach(function (test) {
-                        if (test.abnormal) {
-                            hasAbnormal = true;
-                            return;
-                        }
-                    });
-                    return hasAbnormal;
-                }
-                return labOrderResult.abnormal;
-            }
         }]);

@@ -1,0 +1,10 @@
+<section class="block">
+    <p class="placeholder-text" ng-if="!hasLabOrders()">{{ noLabOrdersMessage }}</p>
+    <div ng-if="hasLabOrders()">
+        <table ng-repeat="labOrderResults in accessions" bindonce="accessions">
+            <tbody lab-order-line test="labOrderResult" ng-repeat="labOrderResult in labOrderResults"
+                   ng-show="showNormalLabResults || hasAbnormalTests(labOrderResult)">
+            </tbody>
+        </table>
+    </div>
+</section>

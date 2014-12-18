@@ -9,6 +9,13 @@ angular.module('bahmni.common.patient')
 
         var DateUtil = Bahmni.Common.Util.DateUtil;
 
+        if ($rootScope.consultation && $rootScope.consultation.encounterDate)
+            $scope.encounterDate = $rootScope.consultation.encounterDate;
+        else
+            $scope.encounterDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now());
+
+        $scope.today = DateUtil.getDateWithoutTime(DateUtil.now());
+
         $scope.getConsultationPadLink = function () {
             return $rootScope.consultationBoardLink();
         };
@@ -92,10 +99,11 @@ angular.module('bahmni.common.patient')
         $scope.links = getLinks();
         $rootScope.$on('$stateChangeSuccess', function() {
             $scope.links = getLinks($state.current.name);
+            $rootScope.consultation.encounterDate = $scope.encounterDate;
         })
     };
 
-    var controller =function ($scope) {
+    var controller = function ($scope) {
         var encounterTypeUuid = $rootScope.encounterConfig.getPatientDocumentEncounterTypeUuid();
         $scope.documentsPromise = encounterService.getEncountersForEncounterType($rootScope.patient.uuid, encounterTypeUuid).then(function(response) {
             return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);

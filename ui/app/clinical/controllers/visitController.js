@@ -13,6 +13,11 @@ angular.module('bahmni.clinical')
             $scope.showTrends = true;
             $scope.visit = $rootScope.visit;
 
+            $scope.investigationResultsParameters = {
+                patientUuid: $scope.patientUuid,
+                visitUuid: $stateParams.visitUuid
+            };
+
             $scope.isNumeric = function (value) {
                 return $.isNumeric(value);
             };

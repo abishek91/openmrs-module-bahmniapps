@@ -9,7 +9,7 @@ angular.module('bahmni.clinical')
             };
             $scope.showTestNotes = function (line) {
                 return true && $scope.hasNotes(line); //consider configuration for notes
-            }
+            };
         };
         return {
             restrict: 'A',
@@ -17,6 +17,6 @@ angular.module('bahmni.clinical')
             scope: {
                 test: "="
             },
-            templateUrl: "views/labOrderLine.html"
+            templateUrl: "views/displayControls/labOrderLine.html"
         };
     });

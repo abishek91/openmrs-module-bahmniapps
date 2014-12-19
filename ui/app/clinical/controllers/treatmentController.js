@@ -42,7 +42,10 @@ angular.module('bahmni.clinical')
             };
 
             //$scope.today = new Date();
-            $scope.today = $rootScope.encounterDate;
+            $scope.today = $rootScope.retrospectiveEntry.encounterDate;
+            $rootScope.$watch('retrospectiveEntry.encounterDate', function(){
+                $scope.today = $rootScope.retrospectiveEntry.encounterDate;
+            });
 
             $scope.treatment = $scope.consultation.incompleteTreatment || newTreatment();
             $scope.treatmentConfig.durationUnits.forEach(function (durationUnit) {

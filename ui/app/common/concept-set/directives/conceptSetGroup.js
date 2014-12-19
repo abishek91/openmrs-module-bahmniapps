@@ -23,7 +23,7 @@ angular.module('bahmni.common.conceptSet')
             var drugOrderAppConfig = appService.getAppDescriptor().getConfigValue("drugOrder") || {};
             $rootScope.consultation.newlyAddedTreatments = [];
             response.drugOrders.forEach(function(drugOrder){
-                $rootScope.consultation.newlyAddedTreatments.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, treatmentConfig, $rootScope.encounterDate));
+                $rootScope.consultation.newlyAddedTreatments.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, treatmentConfig, $rootScope.retrospectiveEntry.encounterDate));
             });
         });
     };

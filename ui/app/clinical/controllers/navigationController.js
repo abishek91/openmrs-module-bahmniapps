@@ -130,5 +130,11 @@ angular.module('bahmni.clinical').controller('ConsultationNavigationController',
                 }));
             };
 
+            $scope.retrospectiveClass = function(){
+                if($rootScope.retrospectiveEntry && $rootScope.retrospectiveEntry.encounterDate &&
+                    $rootScope.retrospectiveEntry.encounterDate < Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now())){
+                        return "retro-mode";
+                }
+            }
             initialize();
         }]);

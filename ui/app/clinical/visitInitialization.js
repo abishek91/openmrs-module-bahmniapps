@@ -8,7 +8,7 @@ angular.module('bahmni.clinical').factory('visitInitialization',
             var getVisit = function() {
                 return encounterService.search(visitUuid).then(function (encounterTransactionsResponse) {
                     var obsIgnoreList = clinicalConfigService.getObsIgnoreList();
-                    $rootScope.visit = Bahmni.Clinical.Visit.create(encounterTransactionsResponse.data, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept, $rootScope.encounterConfig, $rootScope.allTestsAndPanelsConcept, obsIgnoreList, visitUuid, conceptSetUiConfigService.getConfig());
+                    $rootScope.visit = Bahmni.Clinical.Visit.create(encounterTransactionsResponse.data, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept, $rootScope.encounterConfig, $rootScope.allTestsAndPanelsConcept, obsIgnoreList, visitUuid, conceptSetUiConfigService.getConfig(), $rootScope.encounterDate);
                 });
             };
 

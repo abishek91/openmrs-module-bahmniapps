@@ -28,12 +28,15 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                     includeAll :  Bahmni.Common.Constants.includeAllObservations,
                     locationUuid: sessionService.getLoginLocationUuid()
                 }).then(function (encounterTransactionResponse) {
+                    //var encounterDate = $rootScope.encounterDate;
+//                    console.log("retro date - " + $rootScope.consultation ?  $rootScope.encounterDate : "no encounter date");
                     $rootScope.consultation = consultationMapper.map(encounterTransactionResponse.data);
+//                    $rootScope.encounterDate = encounterTransactionResponse.data.encounterDateTime
                 });
             };
 
             var getPastDiagnoses = function() {
-                return diagnosisService.getPastDiagnoses(patientUuid).success(function (response) {
+                return diagnosisService.getPastDiagnoses(patientUuid, $rootScope.consultation).success(function (response) {
                     var diagnosisMapper = new Bahmni.DiagnosisMapper();
                     $rootScope.allDiagnoses = diagnosisMapper.mapDiagnoses(response);
                     $rootScope.consultation.pastDiagnoses = diagnosisMapper.mapPastDiagnosis($rootScope.allDiagnoses, $rootScope.consultation.encounterUuid);
@@ -56,7 +59,8 @@ angular.module('bahmni.clinical').factory('consultationInitialization',
                 if($rootScope.activeVisit){
                     return encounterService.search($rootScope.activeVisit.uuid).then(function (encounterTransactionsResponse) {
                         var obsIgnoreList = clinicalConfigService.getObsIgnoreList();
-                        $rootScope.visit = Bahmni.Clinical.Visit.create(encounterTransactionsResponse.data, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept,$rootScope.encounterConfig, $rootScope.allTestsAndPanelsConcept, obsIgnoreList, $rootScope.activeVisit.uuid, conceptSetUiConfigService.getConfig());
+                        $rootScope.visit = Bahmni.Clinical.Visit.create(encounterTransactionsResponse.data, $rootScope.consultationNoteConcept, $rootScope.labOrderNotesConcept,$rootScope.encounterConfig,
+                            $rootScope.allTestsAndPanelsConcept, obsIgnoreList, $rootScope.activeVisit.uuid, conceptSetUiConfigService.getConfig(), $rootScope.encounterDate);
                     });
                 }
             };

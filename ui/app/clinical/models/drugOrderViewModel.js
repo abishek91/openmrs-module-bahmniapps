@@ -9,13 +9,18 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
     var drugFormDefaults = appConfig.drugFormDefaults || {};
     var durationUnits = config.durationUnits || [];
 
+    var today = function() {
+        return self.encounterDate;
+    }
+
     Object.defineProperty(this, 'effectiveStartDate', {
         get: function () {
             return self._effectiveStartDate;
         },
         set : function(value){
             self._effectiveStartDate = value;
-            if(DateUtil.parse(value) > DateUtil.now()){
+
+            if(DateUtil.parse(value) > today()){
                 self.scheduledDate = self._effectiveStartDate;
             } else {
                 self.scheduledDate = null;
@@ -23,7 +28,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         },
         enumerable: true
     });
-
 
     Object.defineProperty(this, 'uiStartDate', {
         get: function () {
@@ -34,11 +38,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
             if(self.effectiveStopDate && DateUtil.isSameDate(self.effectiveStartDate, self.effectiveStopDate)){
                 var oldEffectiveStopDate = new Date(self.effectiveStopDate);
                 var oldEffectiveStartDate = new Date(self.effectiveStartDate);
-                self.effectiveStartDate = oldEffectiveStopDate >= DateUtil.today() ? DateUtil.addSeconds(oldEffectiveStartDate, 1) : DateUtil.today();
+                self.effectiveStartDate = oldEffectiveStopDate >= today() ? DateUtil.addSeconds(oldEffectiveStartDate, 1) : today();
             }
         }
     });
-
 
     Object.defineProperty(this, 'uniformDosingDoseUnits', {
         get: function() {
@@ -67,7 +70,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
     this.route = this.route || undefined;
     this.durationUnit = this.durationUnit || appConfig.defaultDurationUnit;
     this.instructions = this.instructions || appConfig.defaultInstructions;
-    this.effectiveStartDate = this.effectiveStartDate || DateUtil.now();
+    this.effectiveStartDate = this.effectiveStartDate || today();
     this.frequencyType = this.frequencyType || Bahmni.Clinical.Constants.dosingTypes.uniform;
     this.doseUnits = this.doseUnits || undefined;
     this.uniformDosingType = this.uniformDosingType || {};
@@ -292,11 +295,11 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
     };
 
     this.isScheduled = function(){
-        return self.scheduledDate && self.scheduledDate > DateUtil.now();
+        return self.scheduledDate && self.scheduledDate > today();
     };
 
     this.isActive = function(){
-        return !self.isDiscontinuedOrStopped() && (self.effectiveStopDate == null || self.effectiveStopDate >= Bahmni.Common.Util.DateUtil.now());
+        return !self.isDiscontinuedOrStopped() && (self.effectiveStopDate == null || self.effectiveStopDate >= today());
     };
 
     this.discontinued = function(){
@@ -320,7 +323,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         newDrugOrder.uuid = undefined;
         newDrugOrder.dateActivated = undefined;
         var oldEffectiveStopDate = new Date(self.effectiveStopDate);
-        newDrugOrder.effectiveStartDate = oldEffectiveStopDate >= DateUtil.today() ? DateUtil.addSeconds(oldEffectiveStopDate, 1) : DateUtil.today();
+        newDrugOrder.effectiveStartDate = oldEffectiveStopDate >= today() ? DateUtil.addSeconds(oldEffectiveStopDate, 1) : today();
         modifyForReverseSyncIfRequired(newDrugOrder);
         defaultQuantityUnit(newDrugOrder);
 
@@ -339,8 +342,8 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         //call of calculateQuantityAndUnit(). Bad code. Needs change.
         newDrugOrder.quantityEnteredViaEdit = true;
 
-        if (newDrugOrder.effectiveStartDate < Date.now()) {
-            newDrugOrder.uiStartDate = Date.now();
+        if (newDrugOrder.effectiveStartDate < today()) {
+            newDrugOrder.uiStartDate = today();
         }
         //newDrugOrder.uiStartDate = newDrugOrder.effectiveStartDate < Date.now() ? Date.now() : newDrugOrder.uiStartDate;
 
@@ -389,9 +392,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
     }
 };
 
-Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderResponse, appConfig, config) {
+Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderResponse, appConfig, config, encounterDate) {
     var administrationInstructions = JSON.parse(drugOrderResponse.dosingInstructions.administrationInstructions) || {};
     var viewModel = new Bahmni.Clinical.DrugOrderViewModel(appConfig, config);
+    viewModel.encounterDate = encounterDate;
     viewModel.asNeeded = drugOrderResponse.dosingInstructions.asNeeded;
     viewModel.route = drugOrderResponse.dosingInstructions.route;
     viewModel.effectiveStartDate = drugOrderResponse.effectiveStartDate ? drugOrderResponse.effectiveStartDate : viewModel.effectiveStartDate;

@@ -4,6 +4,7 @@ angular.module('bahmni.common.patientSearch')
 .controller('PatientsListController', ['$scope', '$window', 'patientService', '$rootScope', 'appService', 'spinner', '$stateParams',
     function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams) {
         var initialize = function () {
+
             $rootScope.retrospectiveEntry = $rootScope.retrospectiveEntry || new Bahmni.Common.RetrospectiveEntry();
 
             var searchTypes = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config").map(mapExtensionToSerachType);

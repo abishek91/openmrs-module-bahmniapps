@@ -4,24 +4,16 @@ angular.module('bahmni.common.patientSearch')
 .controller('PatientsListController', ['$scope', '$window', 'patientService', '$rootScope', 'appService', 'spinner', '$stateParams',
     function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams) {
         var initialize = function () {
+            $rootScope.retrospectiveEntry = $rootScope.retrospectiveEntry || new Bahmni.Common.RetrospectiveEntry();
+
             var searchTypes = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config").map(mapExtensionToSerachType);
             $scope.search = new Bahmni.Common.PatientSearch.Search(searchTypes);
             $scope.search.markPatientEntry();
             $scope.$watch('search.searchType', fetchPatients);
 
-            console.log($rootScope.encounterDate);
-            $rootScope.encounterDate = $rootScope.encounterDate ? $rootScope.encounterDate : Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now());
-            $scope.encounterDate = $rootScope.encounterDate;
-
-            $rootScope.$watch('encounterDate', function (){
-                console.log("VIKI $rootScope.encounterDate :: "+$rootScope.encounterDate);
-                return $rootScope.encounterDate;
-            });
-            $scope.$watch('encounterDate', function (){
-                console.log("VIKI $scope.encounterDate :: "+$scope.encounterDate);
-                return $scope.encounterDate;
-            });
         };
+
+        $scope.today = Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now());
 
         $scope.searchPatients = function () {
             return spinner.forPromise(patientService.search($scope.search.searchParameter)).then(function (response) {

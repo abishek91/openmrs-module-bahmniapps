@@ -342,10 +342,10 @@ Bahmni.Clinical.DrugOrderViewModel = function (appConfig, config, proto) {
         //call of calculateQuantityAndUnit(). Bad code. Needs change.
         newDrugOrder.quantityEnteredViaEdit = true;
 
-        if (newDrugOrder.effectiveStartDate < today()) {
-            newDrugOrder.uiStartDate = today();
-        }
-        //newDrugOrder.uiStartDate = newDrugOrder.effectiveStartDate < Date.now() ? Date.now() : newDrugOrder.uiStartDate;
+        //if (newDrugOrder.effectiveStartDate < today()) {
+        //    newDrugOrder.uiStartDate = today();
+        //}
+        newDrugOrder.uiStartDate = newDrugOrder.effectiveStartDate < today() ? today() : newDrugOrder.uiStartDate;
 
         modifyForReverseSyncIfRequired(newDrugOrder);
         defaultQuantityUnit(newDrugOrder);

@@ -9,7 +9,6 @@ angular.module('bahmni.common.patient')
 
         var DateUtil = Bahmni.Common.Util.DateUtil;
 
-//        $scope.encounterDate = $rootScope.encounterDate;
         $scope.today = DateUtil.getDateWithoutTime(DateUtil.now());
 
         $scope.getConsultationPadLink = function () {
@@ -95,7 +94,6 @@ angular.module('bahmni.common.patient')
         $scope.links = getLinks();
         $rootScope.$on('$stateChangeSuccess', function() {
             $scope.links = getLinks($state.current.name);
-//            $rootScope.encounterDate = $scope.encounterDate;
         })
     };
 

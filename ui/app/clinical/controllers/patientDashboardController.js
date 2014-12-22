@@ -39,7 +39,7 @@ angular.module('bahmni.clinical')
 
             var getEncountersForVisit = function (visitUuid) {
                 encounterService.search(visitUuid).then(function (encounterTransactionsResponse) {
-                    $scope.visit = Bahmni.Clinical.Visit.create(encounterTransactionsResponse.data, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig, $rootScope.allTestsAndPanelsConcept, $scope.obsIgnoreList, visitUuid, conceptSetUiConfigService.getConfig(), $rootScope.encounterDate);
+                    $scope.visit = Bahmni.Clinical.Visit.create(encounterTransactionsResponse.data, $scope.consultationNoteConcept, $scope.labOrderNotesConcept, $scope.encounterConfig, $rootScope.allTestsAndPanelsConcept, $scope.obsIgnoreList, visitUuid, conceptSetUiConfigService.getConfig(), $rootScope.retrospectiveEntry.encounterDate);
                 });
             };
 

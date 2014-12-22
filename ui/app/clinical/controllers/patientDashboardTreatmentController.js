@@ -11,7 +11,7 @@ angular.module('bahmni.clinical')
             return drugOrder1.effectiveStartDate > drugOrder2.effectiveStartDate ? -1 : 1;
         };
         var mapToPrecribedDrugOrder = function(drugOrder) {
-            return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, null, null, $rootScope.encounterDate);
+            return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, null, null, $rootScope.retrospectiveEntry.encounterDate);
         }
         var getActiveDrugOrders = function () {
             return treatmentService.getActiveDrugOrders($stateParams.patientUuid).then(function (drugOrders) {
@@ -21,7 +21,7 @@ angular.module('bahmni.clinical')
         };
 
         var mapToPrecribedDrugOrder = function(drugOrder) {
-            return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, null, null, $rootScope.encounterDate);
+            return Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, null, null, $rootScope.retrospectiveEntry.encounterDate);
         }
 
         var getLastPrescribedDrugOrders = function () {
@@ -52,7 +52,7 @@ angular.module('bahmni.clinical')
                 var dateUtil = Bahmni.Common.Util.DateUtil;
                 var prescribedDrugOrders = [];
                 drugOrders.forEach(function (drugOrder) {
-                    prescribedDrugOrders.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, null, null, $rootScope.encounterDate))
+                    prescribedDrugOrders.push(Bahmni.Clinical.DrugOrderViewModel.createFromContract(drugOrder, null, null, $rootScope.retrospectiveEntry.encounterDate))
                 });
                 $scope.allTreatments = new Bahmni.Clinical.ResultGrouper().group(prescribedDrugOrders, function (prescribedDrugOrder) {
                     return dateUtil.getDate(prescribedDrugOrder.effectiveStartDate).toISOString();

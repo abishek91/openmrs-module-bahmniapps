@@ -62,7 +62,7 @@ angular.module('bahmni.clinical')
                 });
 
                 var createDrugOrder = function(drugOrder) {
-                    return DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, treatmentConfig, $rootScope.encounterDate);
+                    return DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig, treatmentConfig, $rootScope.retrospectiveEntry.encounterDate);
                 };
 
                 var drugOrderGroups = _.map(drugOrderGroupedByDate, function (drugOrders, visitStartDate) {
@@ -81,7 +81,7 @@ angular.module('bahmni.clinical')
                 return treatmentService.getActiveDrugOrders($stateParams.patientUuid).then(function (drugOrders) {
                     activeDrugOrdersList = drugOrders || [];
                     return activeDrugOrdersList.map(function (drugOrder) {
-                        return DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig,treatmentConfig, $rootScope.encounterDate);
+                        return DrugOrderViewModel.createFromContract(drugOrder, drugOrderAppConfig,treatmentConfig, $rootScope.retrospectiveEntry.encounterDate);
                     });
                 });
             };

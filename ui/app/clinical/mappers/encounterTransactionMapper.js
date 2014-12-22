@@ -21,14 +21,13 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
         return encounterDate < Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now());
     }
 
-    this.map = function (consultation, patient, locationUuid) {
-
+    this.map = function (consultation, patient, locationUuid, retrospectiveEntry) {
         var encounterData = {};
         encounterData.locationUuid = locationUuid;
         encounterData.patientUuid = patient.uuid;
 
-        if (isRetrospectiveEntry(consultation.encounterDate) ) {
-            encounterData.encounterDateTime = consultation.encounterDate;
+        if (retrospectiveEntry.isRetrospective) {
+            encounterData.encounterDateTime = retrospectiveEntry.encounterDate;
             encounterData.visitType = "OPD";
         }
 

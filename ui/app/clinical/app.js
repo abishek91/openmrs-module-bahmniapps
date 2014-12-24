@@ -55,7 +55,7 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
                     backLinks: [{label: "Dashboard", state: "patient.dashboard"}]
                 },
                 views: {
-                    'additional-header': { templateUrl: 'views/dashboardHeader.html' },
+                    'additional-header': { templateUrl: 'views/visitHeader.html' },
                     'content': {
                         templateUrl: 'views/visit.html',
                         controller: 'VisitController'
@@ -144,10 +144,6 @@ angular.module('consultation').config(['$stateProvider', '$httpProvider', '$urlR
             .state('patient.consultation.templates', {
                 url: '/templates',
                 templateUrl: 'views/comingSoon.html'
-            })
-            .state('patient.consultation.new', {
-                url: '/new',
-                templateUrl: 'views/patientDashboard.html'
             })
             .state('patient.visitsummaryprint', {
                 url: '/latest-prescription-print',

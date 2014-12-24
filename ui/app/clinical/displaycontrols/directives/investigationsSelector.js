@@ -130,7 +130,8 @@ angular.module('bahmni.clinical')
         return $scope.allSelectables().filter(function(selectable){ return selectable.isSelectedFromSelf(); });
     }
 })
-.directive('investigationsSelector',function(){
+.directive('' +
+    '',function(){
     return {
         restrict: 'EA',
         templateUrl: 'views/investigationsSelector.html',

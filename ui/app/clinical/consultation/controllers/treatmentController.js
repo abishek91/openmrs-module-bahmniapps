@@ -118,6 +118,12 @@ angular.module('bahmni.clinical')
                 $scope.treatment.calculateQuantityAndUnit();
             }, true);
 
+            var findOverlappingOrders = function(existingDrugOrders, newDrugOrder) {
+                return existingDrugOrders.filter(function (drugOrder) {
+                    return (drugOrder.drug.uuid == newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
+                });
+            }
+
             $scope.add = function () {
                 $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                 var newDrugOrder = $scope.treatment;
@@ -131,16 +137,11 @@ angular.module('bahmni.clinical')
                     $scope.treatments.splice($scope.treatment.currentIndex, 1);
                 }
 
-                var potentiallyOverlappingOrders = existingDrugOrders.filter(function (drugOrder) {
-                    return (drugOrder.drug.uuid == newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
-                });
+                var potentiallyOverlappingOrders = findOverlappingOrders(existingDrugOrders, newDrugOrder);
 
-                setEffectiveDates(newDrugOrder, potentiallyOverlappingOrders);
+                setEffectiveDates(newDrugOrder, potentiallyOverlappingOrders, existingDrugOrders);
 
-
-                var alreadyActiveSimilarOrders = existingDrugOrders.filter(function (drugOrder) {
-                    return (drugOrder.drug.uuid == newDrugOrder.drug.uuid && drugOrder.overlappingScheduledWith(newDrugOrder));
-                });
+                var alreadyActiveSimilarOrders = findOverlappingOrders(existingDrugOrders, newDrugOrder);
 
                 if (alreadyActiveSimilarOrders.length > 0) {
                     $scope.alreadyActiveSimilarOrder = _.sortBy(potentiallyOverlappingOrders, 'effectiveStartDate').reverse()[0];
@@ -155,16 +156,31 @@ angular.module('bahmni.clinical')
                 $scope.treatments.push($scope.treatment);
                 $scope.clearForm();
             };
-            var setEffectiveDates = function (newDrugOrder, existingDrugOrders) {
-                existingDrugOrders.forEach(function (existingDrugOrder) {
+
+            var setEffectiveDates = function (newDrugOrder, potentiallyOverlappingOrders, existingDrugOrders ) {
+                potentiallyOverlappingOrders.forEach(function (existingDrugOrder) {
                     if (DateUtil.isSameDate(existingDrugOrder.effectiveStartDate, newDrugOrder.effectiveStopDate) && !DateUtil.isSameDate(existingDrugOrder.effectiveStopDate, newDrugOrder.effectiveStartDate)) {
                         newDrugOrder.effectiveStopDate = DateUtil.subtractSeconds(existingDrugOrder.effectiveStartDate, 1);
                         if(newDrugOrder.previousOrderUuid || DateUtil.isSameDate(newDrugOrder.effectiveStartDate,newDrugOrder.encounterDate)){
                             newDrugOrder.autoExpireDate = newDrugOrder.effectiveStopDate;
                         }
+                        if (DateUtil.isSameDate(existingDrugOrder.effectiveStopDate, newDrugOrder.effectiveStartDate) && DateUtil.isSameDate(DateUtil.addSeconds(existingDrugOrder.effectiveStopDate, 1), newDrugOrder.effectiveStartDate)) { //compare date part only of datetime
+                            newDrugOrder.effectiveStartDate = DateUtil.addSeconds(existingDrugOrder.effectiveStopDate, 1);
+                        }
+                        var overlappingAfterAdjusting = findOverlappingOrders(existingDrugOrders, newDrugOrder);
+                        if(overlappingAfterAdjusting.length > 0){
+                            setEffectiveDates(newDrugOrder, overlappingAfterAdjusting, existingDrugOrders)
+                        }
                     }
-                    if (DateUtil.isSameDate(existingDrugOrder.effectiveStopDate, newDrugOrder.effectiveStartDate) && DateUtil.isSameDate(DateUtil.addSeconds(existingDrugOrder.effectiveStopDate, 1), newDrugOrder.effectiveStartDate)) { //compare date part only of datetime
+                    else if (DateUtil.isSameDate(existingDrugOrder.effectiveStopDate, newDrugOrder.effectiveStartDate) && DateUtil.isSameDate(DateUtil.addSeconds(existingDrugOrder.effectiveStopDate, 1), newDrugOrder.effectiveStartDate)) { //compare date part only of datetime
                         newDrugOrder.effectiveStartDate = DateUtil.addSeconds(existingDrugOrder.effectiveStopDate, 1);
+                        newDrugOrder.effectiveStopDate = DateUtil.subtractSeconds(DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays), 1);
+
+                        var overlappingAfterAdjusting = findOverlappingOrders(existingDrugOrders, newDrugOrder);
+                        if(overlappingAfterAdjusting.length > 0){
+                            setEffectiveDates(newDrugOrder, overlappingAfterAdjusting, existingDrugOrders)
+                        }
+
                     }
                 });
             };

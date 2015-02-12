@@ -106,6 +106,7 @@ describe("TreatmentController", function () {
             scope.add();
             expect(scope.treatments.length).toEqual(1);
             expect(scope.treatments[0].effectiveStartDate.getTime() == DateUtil.addSeconds("2014-12-04", 1).getTime()).toBeTruthy();
+            // no effectivestop date assertion should fail if added
         });
 
         it("should allow to add new drug order if new order is scheduled to end on same day as start date of already existing order", function () {
@@ -159,6 +160,77 @@ describe("TreatmentController", function () {
     });
     describe("Detect Overlapping orders amongst new orders on Save", function () {
 
+        describe("should allow potentially overlapping order whose date and time can be set and be resolved", function () {
+
+            var encounterDate = DateUtil.parse("2014-12-02 02:00:00");
+
+            it("new drug orders for dates 2-4 and 5-6 and 4-5 in this order", function () {
+                var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [],
+                    {
+                        drug: {name: "abc", uuid: "123"},
+                        effectiveStartDate: DateUtil.parse("2014-12-02 02:00:00"),
+                        effectiveStopDate: DateUtil.parse("2014-12-04  02:00:00"),
+                        durationInDays: 2
+                    },
+                    encounterDate);
+                var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [],
+                    {
+                        drug: {name: "abc", uuid: "123"},
+                        effectiveStartDate: DateUtil.parse("2014-12-05 01:00:00"),
+                        effectiveStopDate: DateUtil.parse("2014-12-06 01:00:00"),
+                        durationInDays: 1
+                    },
+                    encounterDate);
+                var dec4_dec5order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, [],
+                    {
+                        drug: {name: "abc", uuid: "123"},
+                        effectiveStartDate: DateUtil.parse("2014-12-04"),
+                        effectiveStopDate: DateUtil.parse("2014-12-05"),
+                        durationInDays: 1
+                    },
+                    encounterDate);
+
+                scope.treatment = dec2_dec4order;
+                expect(scope.treatments.length).toEqual(0);
+                scope.add();
+
+                expect(scope.treatment).not.toEqual(dec2_dec4order);
+                expect(scope.treatments.length).toEqual(1);
+                var dec2_dec4orderAfterSave = scope.treatments[0];
+                expect(DateUtil.isSameDateTime(dec2_dec4orderAfterSave.effectiveStartDate, DateUtil.parse("2014-12-02 02:00:00"))).toBeTruthy();
+                expect(DateUtil.isSameDateTime(dec2_dec4orderAfterSave.effectiveStopDate, DateUtil.parse("2014-12-04 02:00:00"))).toBeTruthy();
+                expect(dec2_dec4orderAfterSave.scheduledDate).toBeNull();
+                expect(dec2_dec4orderAfterSave.autoExpireDate).toBeUndefined();
+
+                scope.treatment = dec5_dec6order;
+                scope.add();
+
+                expect(scope.treatment).not.toEqual(dec5_dec6order);
+                expect(scope.treatments.length).toEqual(2);
+                var dec5_dec6orderAfterSave = scope.treatments.filter(function (treatment) {
+                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-05")
+                })[0];
+
+                expect(DateUtil.isSameDateTime(dec5_dec6orderAfterSave.effectiveStartDate, DateUtil.parse("2014-12-05 01:00:00"))).toBeTruthy();
+                expect(DateUtil.isSameDateTime(dec5_dec6orderAfterSave.effectiveStopDate, DateUtil.parse("2014-12-06 01:00:00"))).toBeTruthy();
+                expect(DateUtil.isSameDateTime(dec5_dec6orderAfterSave.scheduledDate, DateUtil.parse("2014-12-05 01:00:00"))).toBeTruthy();
+                expect(dec5_dec6orderAfterSave.autoExpireDate).toBeUndefined();
+
+                scope.treatment = dec4_dec5order;
+                scope.add();
+
+                expect(scope.treatment).not.toEqual(dec4_dec5order);
+                expect(scope.treatments.length).toEqual(3);
+                var dec4_dec5orderAfterSave = scope.treatments.filter(function (treatment) {
+                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-04")
+                })[0];
+
+                expect(DateUtil.isSameDateTime(dec4_dec5orderAfterSave.effectiveStartDate, DateUtil.parse("2014-12-04 02:00:01"))).toBeTruthy();
+                expect(DateUtil.isSameDateTime(dec4_dec5orderAfterSave.effectiveStopDate, DateUtil.parse("2014-12-05 00:59:59"))).toBeTruthy();
+                expect(DateUtil.isSameDateTime(dec4_dec5orderAfterSave.scheduledDate, DateUtil.parse("2014-12-04 02:00:01"))).toBeTruthy();
+                expect(dec4_dec5orderAfterSave.autoExpireDate).toBeUndefined();
+            });
+        });
         describe("should allow potentially overlapping order whose dates can be set and be resolved", function () {
 
             var encounterDate = DateUtil.parse("2014-12-02");

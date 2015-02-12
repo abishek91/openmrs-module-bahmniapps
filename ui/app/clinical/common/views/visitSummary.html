@@ -14,6 +14,11 @@
         <bahmni-diagnosis patient-uuid="visitTabConfig.currentTab.diagnosis.patientUuid" section-title="visitTabConfig.currentTab.diagnosis.title" config="visitTabConfig.currentTab.diagnosis"></bahmni-diagnosis>
     </section>
 
+    <section class="block dashboard-section">
+        <patient-profile patient="patient" config="visitTabConfig.currentTab.patientInformation"></patient-profile>
+    </section>
+
+
     <div ng-if="visitTabConfig.currentTab.observation" id="observation-section">
         <section class="block observation dashboard-section" >
             <ul bm-gallery access-impression="true">

@@ -127,7 +127,7 @@ angular.module('bahmni.clinical')
             $scope.add = function () {
                 $scope.treatment.dosingInstructionType = Bahmni.Clinical.Constants.flexibleDosingInstructionsClass;
                 var newDrugOrder = $scope.treatment;
-                newDrugOrder.effectiveStopDate = DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays);
+                newDrugOrder.effectiveStopDate = DateUtil.subtractSeconds(DateUtil.addDays(DateUtil.parse(newDrugOrder.effectiveStartDate), newDrugOrder.durationInDays), 1);
 
                 var unsavedNotBeingEditedOrders = $scope.treatments.filter(function(drugOrder) { return drugOrder.isBeingEdited == false});
 
@@ -158,7 +158,7 @@ angular.module('bahmni.clinical')
 
             var setEffectiveDates = function (newDrugOrder, potentiallyOverlappingOrders, existingDrugOrders ) {
                 potentiallyOverlappingOrders.forEach(function (existingDrugOrder) {
-                    if (DateUtil.isSameDate(existingDrugOrder.effectiveStartDate, newDrugOrder.effectiveStopDate) && !DateUtil.isSameDate(existingDrugOrder.effectiveStopDate, newDrugOrder.effectiveStartDate)) {
+                    if (DateUtil.isSameDate(existingDrugOrder.effectiveStartDate, DateUtil.addSeconds(newDrugOrder.effectiveStopDate,1)) && !DateUtil.isSameDate(existingDrugOrder.effectiveStopDate, newDrugOrder.effectiveStartDate)) {
                         newDrugOrder.effectiveStopDate = DateUtil.subtractSeconds(existingDrugOrder.effectiveStartDate, 1);
                         if(newDrugOrder.previousOrderUuid || DateUtil.isSameDate(newDrugOrder.effectiveStartDate,newDrugOrder.encounterDate)){
                             newDrugOrder.autoExpireDate = newDrugOrder.effectiveStopDate;
@@ -179,7 +179,6 @@ angular.module('bahmni.clinical')
                         if(overlappingAfterAdjusting.length > 0){
                             setEffectiveDates(newDrugOrder, overlappingAfterAdjusting, existingDrugOrders)
                         }
-
                     }
                 });
             };

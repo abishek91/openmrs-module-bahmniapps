@@ -14,7 +14,6 @@ var buildContainerFor = function (moduleName, module, appLevelDependencies, text
 };
 
 var buildContainerForClinical = function (appLevelDependencies, templatesToCache) {
-    var appLevelDependencies = {'bahmni.common.config' : {}};
     return buildContainerFor("bahmni.clinical", Bahmni.Clinical, appLevelDependencies);
 };
 

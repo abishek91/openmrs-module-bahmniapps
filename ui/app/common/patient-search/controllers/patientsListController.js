@@ -8,6 +8,7 @@ angular.module('bahmni.common.patientSearch')
             $scope.search = new Bahmni.Common.PatientSearch.Search(searchTypes);
             $scope.search.markPatientEntry();
             $scope.$watch('search.searchType', fetchPatients);
+            $scope.registrationConsultationLinkPrivilege = Bahmni.Common.Constants.registrationConsultationLinkPrivilege;
         };
 
         $scope.searchPatients = function () {

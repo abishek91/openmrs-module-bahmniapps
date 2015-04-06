@@ -9,7 +9,7 @@ angular.module('bahmni.common.patient')
 
         var DateUtil = Bahmni.Common.Util.DateUtil;
         $scope.retrospectivePrivilege = Bahmni.Common.Constants.retrospectivePrivilege;
-
+        $scope.registrationConsultationLinkPrivilege = Bahmni.Common.Constants.registrationConsultationLinkPrivilege;
         $scope.today = DateUtil.getDateWithoutTime(DateUtil.now());
 
         $scope.getDashboardLink = function() {

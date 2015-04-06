@@ -109,6 +109,7 @@ Bahmni.Common = Bahmni.Common || {};
         serverErrorMessages: serverErrorMessages,
         currentUser:'bahmni.user',
         retrospectivePrivilege:'app:clinical:retrospective',
+        registrationConsultationLinkPrivilege:'app:common:registration_consultation_link',
         nutritionalConceptName:'Nutritional Values',
         messageForNoObservation: "No observations captured for this visit.",
         messageForNoDisposition: "No dispositions available.",
